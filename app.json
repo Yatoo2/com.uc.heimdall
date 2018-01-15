@@ -1,20 +1,51 @@
 {
 	"id": "com.uc.heimdall",
 	"sdk": 2,
-	"permissions": [
-		"homey:manager:api"
-	  ],
+	"permissions": [ "homey:manager:api" ],
 	"name": { "en": "Heimdall"},
-    "description": { "en": "This app turns homey into a simple alarm system" },
-    "category": "tools",
-    "images": { "large": "assets/images/large.png", "small": "assets/images/small.png" },
-	"version": "0.0.1",
+	"description": { "en": "This app turns homey into a simple surveillance system" },
+	"category": [ "security", "tools" ],
+	"images": { "large": "assets/images/large.png", "small": "assets/images/small.png" },
+	"version": "0.1.1",
 	"compatibility": "1.x >=1.5.0",
 	"author": { "name": "Danee de Kruyff", "email": "daneedekruyff@outlook.com" },
-    "tags": { "en": [ "Alarm", "Tools"] },
+	"contributors": {
+		"developers": [{"name": "Danee de Kruyff","email": "daneedekruyff@outlook.com"}]
+	},
+	"contributing": {
+		"donate": {
+		  "paypal": {
+			"username": "daneedekruyff",
+			"currency": "EUR"
+		  }
+		}
+	  },
+	"tags": { 
+		"en": [ "Home", "Alarm", "System", "Tools", "Log", "Surveillance"],
+		"nl": [ "Huis", "Alarm", "Systeem", "Beveilig", "Beveiliging", "Toezicht"] 
+	},
 	"flow": {
-		"triggers": [{
-			"id": "Alarm_Activated",
+		"triggers": [
+		{
+			"id": "SurveillanceChanged",
+			"title": {
+				"en": "Surveillance Mode changed.",
+				"nl": "Toezicht modus is gewijzigt."
+			},
+			"tokens": [
+				{
+					"name": "mode",
+					"type": "string",
+					"title": {
+						"en": "Surveillance Mode",
+						"nl": "Toezicht Modus"
+					},
+					"example": "Disarmed"
+				}
+			]
+		},	
+		{
+			"id": "AlarmActivated",
 			"title": {
 				"en": "The alarm is activated.",
 				"nl": "Het alarm is geactiveerd."
@@ -30,18 +61,153 @@
 					"example": "-"
 				}
 			]
-		}
-		],
-		"conditions": [{
-			"id": "SurveillanceActivated",
+		},
+		{
+			"id": "DelayActivated",
 			"title": {
-				"en": "!{{Surveillance mode active|Surveillance mode not active}}",
-				"nl": "!{{Toezicht mode is actief|Toezicht mode is niet actief}}"
-			}
+				"en": "The delay is activated.",
+				"nl": "Het vertraging is geactiveerd."
+			},
+			"tokens": [
+				{
+					"name": "Reason",
+					"type": "string",
+					"title": {
+						"en": "Reason",
+						"nl": "Reden"
+					},
+					"example": "-"
+				},
+				{
+					"name": "Duration",
+					"type": "number",
+					"title": {
+						"en": "Duration",
+						"nl": "Duur"
+					},
+					"example": 30
+				}
+			]
+		},
+		{
+			"id": "TimeTillAlarm",
+			"title":{
+				"en": "The time untill alarm changed",
+				"nl": "De tijd tot alarm wijzigt"
+			},
+			"tokens": [
+				{
+					"name": "AlarmTimer",
+					"type": "number",
+					"title": {
+						"en": "Seconds untill alarm",
+						"nl": "Seconden tot alarm"
+					},
+					"example": 30
+				}
+			]
+		},
+		{
+			"id": "TimeTillArmed",
+			"title":{
+				"en": "The time untill armed changed",
+				"nl": "De tijd tot geactiveerd wijzigt"
+			},
+			"tokens": [
+				{
+					"name": "ArmedTimer",
+					"type": "number",
+					"title": {
+						"en": "Seconds untill armed",
+						"nl": "Seconden tot armed"
+					},
+					"example": 30
+				}
+			]
 		}
 		],
-		"actions": [{
-			"id": "Send_Info",
+		"conditions": [
+			{
+				"id": "SurveillanceIs",
+				"title": {
+					"en": "Surveillance mode is !{{ |not }}",
+					"nl": "Toezicht mode is !{{ |niet }}"
+				},
+				"args": [
+					{
+					  	"name": "surveillance",
+					  	"type": "dropdown",
+					  	"values": [
+							{
+								"id": "armed",
+								"label": {
+									"en": "Armed",
+									"nl": "Geactiveerd"
+								}
+							},
+						  	{
+								"id": "disarmed",
+								"label": {
+									"en": "Disarmed",
+									"nl": "Gedeactiveerd"
+								}
+						  	},
+						  	{
+								"id": "partially_armed",
+								"label": {
+									"en": "Partially Armed",
+									"nl": "Deels geactiveerd"
+								}
+						  	}
+					  	]
+					}
+				]
+			}
+		],
+		"actions": [
+		{
+			"id": "SetSurveillance",
+			"title": {
+				"en": "Set Surveillance Mode",
+				"nl": "Stel Toezicht Modus in"
+			},
+			"args": [
+				{
+					  "name": "surveillance",
+					  "type": "dropdown",
+					  "values": [
+						{
+							"id": "armed",
+							"label": {
+								"en": "Armed",
+								"nl": "Geactiveerd"
+							}
+						},
+						  {
+							"id": "disarmed",
+							"label": {
+								"en": "Disarmed",
+								"nl": "Gedeactiveerd"
+							}
+						  },
+						  {
+							"id": "partially_armed",
+							"label": {
+								"en": "Partially Armed",
+								"nl": "Deels geactiveerd"
+							}
+						  }
+					  ]
+				},
+				{
+					"name": "device",
+					"type": "device",
+					"filter": "driver_id=surveillanceModeSwitch"
+				}
+			]
+		},
+		{
+			"id": "SendInfo",
 			"title": {
 				"en": "Send information to Heimdall.",
 				"nl": "Stuur informatie naar Heimdall."
@@ -52,41 +218,150 @@
 			}]
 		},
 		{
-			"id": "Clear_Log",
+			"id": "ClearHistory",
 			"title": {
-				"en": "Clear Heimdall log data.",
-				"nl": "Verwijder Heimdall log gegevens."
+				"en": "Clear Heimdall history.",
+				"nl": "Verwijder Heimdall geschiedenis."
 			}
 		},
 		{
-			"id": "Activate_Surveillance",
-			"title": {
-				"en": "Activate Surveillance",
-				"nl": "Activeer toezicht"
-			}
-		},
-		{
-			"id": "Deactivate_Surveillance",
-			"title": {
-				"en": "Deactivate Surveillance",
-				"nl": "Deactiveer toezicht"
-			}
-		},
-		{
-			"id": "Activate_Alarm",
+			"id": "ActivateAlarm",
 			"title": {
 				"en": "Activate Alarm",
 				"nl": "Activeer Alarm"
 			}
 		},
 		{
-			"id": "Deactivate_Alarm",
+			"id": "DeactivateAlarm",
 			"title": {
 				"en": "Deactivate Alarm",
 				"nl": "Deactiveer Alarm"
 			}
 		}
-
 		]
-	}
+	},
+
+	"capabilities": {
+		"alarm_heimdall": {
+            "type": "boolean",
+            "title": {
+				"en": "Alarm",
+				"nl": "Alarm"
+            },
+            "getable": true,
+            "setable": true
+        }
+	},
+
+	"drivers": [
+		{
+			"id": "surveillanceModeSwitch",
+			"name": {
+				"en": "Mode",
+				"nl": "Modus"
+				},
+			"images": {
+				"large": "drivers/surveillanceModeSwitch/assets/images/large.png",
+				"small": "drivers/surveillanceModeSwitch/assets/images/small.png"
+			},
+			"class": "other",
+			"capabilities": [ "homealarm_state" ],
+			"pair": [
+				{
+					"id": "list_triggers",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_triggers"
+					}
+				},
+				{
+					"id": "add_triggers",
+					"template": "add_devices"
+				}
+			],
+			"mobile": {
+				"components": [
+					{
+						"id": "icon",
+						"capabilities": [ ]
+					},
+					{
+						"id": "picker",
+						"capabilities": [ "homealarm_state" ]
+					}
+				]
+			}
+		},
+		{
+			"id": "alarmOffSwitch",
+			"name": {
+				"en": "Alarm",
+				"nl": "Alarm"
+			},
+			"images": {
+				"large": "drivers/alarmOffSwitch/assets/images/large.png",
+				"small": "drivers/alarmOffSwitch/assets/images/small.png"
+			},
+			"class": "other",
+			"capabilities": [ "button", "alarm_heimdall" ],
+			"capabilitiesOptions":  {
+				"button": {
+					"title":{
+						"en": "Turn off",
+						"nl": "Schakel uit"
+					}
+				}
+			},
+			"pair": [
+				{
+					"id": "list_triggers",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_triggers"
+					}
+				},
+				{
+					"id": "add_triggers",
+					"template": "add_devices"
+				}
+			],
+			"mobile": {
+				"components": [
+					{
+						"id": "icon",
+						"capabilities": [ ]
+					},
+					{
+						"id": "sensor",
+						"capabilities": [ "alarm_heimdall" ],
+						"options": {
+							"icons": {
+								"alarm_heimdall": "drivers/alarmOffSwitch/assets/alarm.svg"
+							},
+							"alarm_heimdall": {
+								"noblink": false,
+								"invert": false, 
+								"label": {
+									"true": {
+										"en": "ALARM",
+										"nl": "ALARM"
+									},
+									"false": {
+										"en": "All is quiet",
+										"nl": "Alles ok"
+									}
+								}
+							}
+						}
+					},
+					{
+						"id": "button",
+						"capabilities": [ "button" ]
+					}
+				]
+			}
+
+		}
+
+	]
 }

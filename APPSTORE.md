@@ -3,8 +3,16 @@
 This app enables you to use your Homey as a surveillance system.
 All detected motion and open/closed doors and windows on selected sensors will be seen by Heimdall. All these events will be logged and when Heimdall is in a Surveillance Mode the alarm will be triggered.
 
+## Supported Devices
+* Any device that has motion detection, i.e. Fibaro Motion Sensor, Aeotec MultiSensor, Xiaomi Human Body Sensor etc.
+* Any device that has contact detection, i.e. Fibaro Door/Window Sensor, Aeotec Recessed Door Sensor etc.
+
+## Supported Languages:
+* English
+* Dutch
+
 ## How do I get it to work?
-* Add a Surveillance Mode button.
+* Add a Surveillance Mode Switch.
 * Select the devices to monitor on the settings page. 
 * Add flows to activate and deactivate the desired Surveillance Mode.
 * Add a flow with the desired actions when the alarm is triggered.
@@ -12,20 +20,8 @@ All detected motion and open/closed doors and windows on selected sensors will b
 * Add an Alarm Off Button.
 * Detailed instructions can be found on the Instructions tab in the apps settings.
 
-## Known issues
-* The app crashes when the app page in Homeys settings is opened while the app is initializing.
+## Need Help, Have questions or remarks?
 
-## Planned features
-- [ ] Redesign the Dashboard.
-- [ ] Look into adding other sensors like smoke/heat/flood.
-- [ ] ..
+Please post your questions/remarks on the [Athom community forum](https://forum.athom.com/discussion/4514)
 
-## Version 0.1.1
-* Code cleanup
-
-## Version 0.1.0
-* Initial public beta version
-
-Thanks to all testers of the alpha version!
-
-Please remember, Heimdall is not intended to be a full blown security system.
+Changelog and more detailed technical information available at the [Github app page](https://github.com/daneedk/com.uc.heimdall)

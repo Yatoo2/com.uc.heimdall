@@ -15,20 +15,46 @@
             "showDate": "Toon datum",
             "showTime": "Toon tijd",
             "autoRefresh": "Automatisch verversen (elke seconde)",
-            "btnClearLog": "Verwijder log",
+            "btnClearHistory": "Verwijder geschiedenis",
             "btnDownload": "Download"
         }
     },
     "tab2": {
         "title": "Instellingen",
         "settings": {
-            "title": "Instellingen"
+            "title": "Instellingen",
+            "tDelay": "Trigger vertraging",
+            "seconds": "Seconden",
+            "save": "Bewaar",
+            "logarmedonly": "Alleen loggen als er een Toezicht Mode actief is",
+            "logtrueonly": "Log het deactiveren van een sensor niet",
+            "delayarming": "Gebruik vertraging ook bij het inschakelen van een Toezicht Modus",
+            "zone": "Zone",
+            "device": "Apparaat",
+            "monitor": "Controleer",
+            "dTrigger": "Vertraagde trigger",
+            "justLog": "Alleen loggen",
+            "no": "Nee",
+            "yes": "Ja",
+            "log": "Log",
+            "full": "Volledig",
+            "partial": "Gedeeltelijk"
+        }
+    },
+    "tab3": {
+        "title": "Instructies",
+        "instructions": {
+            "title": "Instructies"
         }
     },
     "hidden": {
         "surveillance": {
             "activated": "Dashboard || Toezicht mode geactiveerd.",
             "deactivated": "Dashboard || Toezicht mode gedeactiveerd."
+        },
+        "settings": {
+            "secondsFail": "De waarde is ongeldig, geef een waarde van 0-120 seconden.",
+            "saveSucces": "De nieuwe instellingen zijn opgeslagen."
         }
     }
 }
