@@ -14,11 +14,16 @@
         },
         "history": {
             "title": "History",
-            "showDate": "Show Date",
-            "showTime": "Show Time",
             "autoRefresh": "Auto refresh (every 1 Sec)",
+            "manualRefresh": "Refresh",
+            "useColors": "Use colors",
             "btnClearHistory": "Clear history",
-            "btnDownload": "Download"
+            "btnDownload": "Download",
+            "date": "Date",
+            "time": "Time",
+            "smode": "Surveillance Mode",
+            "source": "Source",
+            "action": "Action"
         }
     },
     "tab2": {
@@ -28,6 +33,8 @@
             "tDelay": "Trigger delay",
             "seconds": "Seconds",
             "save": "Save",
+            "secondsFail": "The value is not valid, please enter a delay in the range of 0-120 seconds",
+            "saveSucces": "The new settings are saved.",
             "logarmedonly": "Only log when a Surveillance mode is active",
             "logtrueonly": "Do not log deactivating of sensors",
             "delayarming": "Use delay also when enabling a Surveillance Mode",
@@ -44,19 +51,57 @@
         }
     },
     "tab3": {
+        "title": "Speech",
+        "speech": {
+            "title": "Speech",
+            "let": "Let Homey tell you when:",
+            "spokenalarmcountdown": "an Alarm countdown is active",
+            "spokenarmcountdown": "an Arming countdown is active",
+            "smodechange": "the Surveillance Mode changed",
+            "alarmchange": "the Alarm is activated or deactivated",
+            "motiontrue": "motion is detected when in an armed Surveillance Mode",
+            "dooropen": "a door or window is opened when in an armed Surveillance Mode"
+        }
+    },
+    "tab4": {
         "title": "Instructions",
         "instructions": {
             "title": "Instructions"
         }
     },
-    "hidden": {
-        "surveillance": {
-            "activated": "Dashboard || Surveilllance Mode activated.",
-            "deactivated": "Dashboard || Surveilllance Mode deactivated."
-        },
-        "settings": {
-            "secondsFail": "The value is not valid, please enter a delay in the range of 0-120 seconds",
-            "saveSucces": "The new settings are saved."
-        }
+    "modes": {
+        "disarmed": "Disarmed",
+        "armed": "Armed",
+        "partiallyarmed": "Partially Armed"
+    },
+    "states": {
+        "open": "Open",
+        "closed": "Closed",
+        "motion": "Motion detected",
+        "nomotion": "No motion detected"
+    },
+    "speech": {
+        "startalarmcountdown": "The alarm will go off in ",
+        "startarmcountdown": "The Surveillance mode will be set to ",
+        "in": " in ",
+        "seconds": " seconds",
+        "smodeset": "The surveillance mode is set to ",
+        "alarmactivated": "The alarm is activated",
+        "alarmdeactivated": "The alarm is deactivated"
+    },
+    "history": {
+        "smodedisarmed": "Surveillance mode is disarmed.",
+        "smodearmed": "Surveillance mode is armed.",
+        "smodepartiallyarmed": "Surveillance mode is partially armed.",
+        "smodedelayarmed": "Surveillance mode will be armed in ",
+        "smodedelaypartiallyarmed": "Surveillance mode will be partially armed in ",
+        "seconds": " seconds.",
+        "alarmdeactivated": "Alarm is deactivated.",
+        "alarmactivated": "Alarm is activated. ",
+        "smodechangedisabled": "Changing Surveillance Mode is disabled due to disarming.",
+        "triggerdalarm": " triggered Alarm.",
+        "alarmdelayed": "Alarmtrigger is delayed: ", 
+        "alarmnotactivated": "Alarm is not activated due to disarming.",
+        "noalarmtrigger": ", no alarm trigger due to running delay countdown."
     }
 }

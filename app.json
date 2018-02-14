@@ -1,12 +1,12 @@
 {
 	"id": "com.uc.heimdall",
 	"sdk": 2,
-	"permissions": [ "homey:manager:api" ],
+	"permissions": [ "homey:manager:api", "homey:manager:speech-output" ],
 	"name": { "en": "Heimdall"},
 	"description": { "en": "This app turns homey into a simple surveillance system" },
 	"category": [ "security", "tools" ],
 	"images": { "large": "assets/images/large.png", "small": "assets/images/small.png" },
-	"version": "0.1.1",
+	"version": "1.0.0",
 	"compatibility": "1.x >=1.5.0",
 	"author": { "name": "Danee de Kruyff", "email": "daneedekruyff@outlook.com" },
 	"contributors": {
@@ -21,8 +21,8 @@
 		}
 	  },
 	"tags": { 
-		"en": [ "Home", "Alarm", "System", "Tools", "Log", "Surveillance"],
-		"nl": [ "Huis", "Alarm", "Systeem", "Beveilig", "Beveiliging", "Toezicht"] 
+		"en": [ "Home", "Alarm", "Homeyalarm", "System", "Tools", "Log", "Surveillance"],
+		"nl": [ "Huis", "Alarm", "Homeyalarm", "Systeem", "Beveilig", "Beveiliging", "Toezicht"] 
 	},
 	"flow": {
 		"triggers": [
@@ -30,7 +30,7 @@
 			"id": "SurveillanceChanged",
 			"title": {
 				"en": "Surveillance Mode changed.",
-				"nl": "Toezicht modus is gewijzigt."
+				"nl": "Toezicht modus is gewijzigd."
 			},
 			"tokens": [
 				{
@@ -63,10 +63,28 @@
 			]
 		},
 		{
+			"id": "AlarmDeactivated",
+			"title": {
+				"en": "The alarm is deactivated.",
+				"nl": "Het alarm is gedeactiveerd."
+			},
+			"tokens": [
+				{
+					"name": "Source",
+					"type": "string",
+					"title": {
+						"en": "Source",
+						"nl": "Bron"
+					},
+					"example": "-"
+				}
+			]
+		},
+		{
 			"id": "DelayActivated",
 			"title": {
 				"en": "The delay is activated.",
-				"nl": "Het vertraging is geactiveerd."
+				"nl": "De vertraging is geactiveerd."
 			},
 			"tokens": [
 				{
@@ -240,7 +258,6 @@
 		}
 		]
 	},
-
 	"capabilities": {
 		"alarm_heimdall": {
             "type": "boolean",
@@ -250,9 +267,8 @@
             },
             "getable": true,
             "setable": true
-        }
+		}
 	},
-
 	"drivers": [
 		{
 			"id": "surveillanceModeSwitch",
@@ -265,7 +281,7 @@
 				"small": "drivers/surveillanceModeSwitch/assets/images/small.png"
 			},
 			"class": "other",
-			"capabilities": [ "homealarm_state" ],
+			"capabilities": [ "homealarm_state", "alarm_heimdall" ],
 			"pair": [
 				{
 					"id": "list_triggers",
