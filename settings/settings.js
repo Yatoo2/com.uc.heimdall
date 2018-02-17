@@ -6,17 +6,58 @@ var allDevices;
 var triggerDelay = 30;
 var logArmedOnly;
 var logTrueOnly;
-//var language = "nl";
+var dashboardVisible = true;
+var heimdallSettings = {};
+var defaultSettings = {
+    "triggerDelay": "30",
+    "delayArming": false,
+    "logArmedOnly": false,
+    "logTrueOnly": false,
+    "spokenSmodeChange": false,
+    "spokenAlarmCountdown": false,
+    "spokenArmCountdown": false,
+    "spokenAlarmChange": false,
+    "spokenMotionTrue": false,
+    "spokenDoorOpen": false
+};
 
 function onHomeyReady(homeyReady){
     Homey = homeyReady;
     Homey.ready();
-    getTriggerDelay();
-    getLogArmedOnly();
-    getLogTrueOnly();
-    getDelayArming();
+    heimdallSettings = defaultSettings;
+    Homey.get('settings', function(err, savedSettings) {
+        if (err) {
+            Homey.alert( err );
+        } else {
+            if (savedSettings != (null || undefined)) {
+                console.log('savedSettings:')
+                console.log(savedSettings)
+                heimdallSettings = savedSettings;
+                
+            }
+        }
+        document.getElementById('autoRefresh').checked = heimdallSettings.autorefresh;
+        document.getElementById('useColors').checked = heimdallSettings.useColors;
+        document.getElementById('triggerDelay').value = heimdallSettings.triggerDelay;
+        document.getElementById('delayArming').checked = heimdallSettings.delayArming;
+        document.getElementById('logArmedOnly').checked = heimdallSettings.logArmedOnly;
+        document.getElementById('logTrueOnly').checked = heimdallSettings.logTrueOnly;
+        document.getElementById('spokenSmodeChange').checked = heimdallSettings.spokenSmodeChange;
+        document.getElementById('spokenAlarmCountdown').checked = heimdallSettings.spokenAlarmCountdown;
+        document.getElementById('spokenArmCountdown').checked = heimdallSettings.spokenArmCountdown;
+        document.getElementById('spokenAlarmChange').checked = heimdallSettings.spokenAlarmChange;
+        document.getElementById('spokenMotionTrue').checked = heimdallSettings.spokenMotionTrue;
+        document.getElementById('spokenDoorOpen').checked = heimdallSettings.spokenDoorOpen;
+        if ( document.getElementById('autoRefresh').checked ) {
+            document.getElementById("buttonRefresh").style = "display:none";
+        } else {
+            document.getElementById("buttonRefresh").style = "display:block";
+        }
+    });
+    
+    showTab(1);
     getLanguage();
-    getSettings();
+    getStatus();
     refreshHistory();
 
     new Vue({
@@ -31,40 +72,26 @@ function onHomeyReady(homeyReady){
           log: []
         },
         methods: {
-            getMonitoredFullDevices() {
+            getDeviceSettings() {
                 Homey.get('monitoredFullDevices', (err, result) => {
-                  console.log('getMonitoredFullDevices: ' + result);
-                  if (result) {
-                    this.devicesMonitoredFull = result;
-                  }
-    
+                    if (result) {
+                        this.devicesMonitoredFull = result;
+                    }
                 });
-            },
-            getMonitoredPartialDevices() {
                 Homey.get('monitoredPartialDevices', (err, result) => {
-                  console.log('getMonitoredPartialDevices: ' + result);
-                  if (result) {
-                    this.devicesMonitoredPartial = result;
-                  }
-    
+                    if (result) {
+                        this.devicesMonitoredPartial = result;
+                    }
                 });
-            },
-            getDelayedDevices() {
                 Homey.get('delayedDevices', (err, result) => {
-                    console.log('getDelayedDevices: '+ result);
                     if (result) {
                         this.devicesDelayed = result;
                     }
-        
                 });
-            },
-            getLoggedDevices() {
                 Homey.get('loggedDevices', (err, result) => {
-                    console.log('getLoggedDevices: '+ result);
                     if (result) {
                         this.devicesLogged = result;
                     }
-        
                 });
             },
             getDevices() {
@@ -86,7 +113,7 @@ function onHomeyReady(homeyReady){
                     }
                 }
                 if ( addDeviceMonitorFull ) {
-                    await console.log('addMonitorFull: ' + device.id, device.name, device.class)
+                    console.log('addMonitorFull: ' + device.id, device.name, device.class)
                     await this.devicesMonitoredFull.push(device);
                     await Homey.set('monitoredFullDevices', this.devicesMonitoredFull, (err, result) => {
                         if (err)
@@ -106,7 +133,7 @@ function onHomeyReady(homeyReady){
                     }
                 }
                 if ( addDeviceMonitorPartial ) {
-                    await console.log('addMonitorPartial: ' + device.id, device.name, device.class)
+                    console.log('addMonitorPartial: ' + device.id, device.name, device.class)
                     await this.devicesMonitoredPartial.push(device);
                     await Homey.set('monitoredPartialDevices', this.devicesMonitoredPartial, (err, result) => {
                         if (err)
@@ -118,7 +145,7 @@ function onHomeyReady(homeyReady){
                 this.removeLog(device);
             },
             async addDelay(device) {
-                await console.log('addDelay: ' + device.id, device.name, device.class)
+                console.log('addDelay: ' + device.id, device.name, device.class)
                 await this.devicesDelayed.push(device);
                 await Homey.set('delayedDevices', this.devicesDelayed, (err, result) => {
                     if (err)
@@ -137,7 +164,7 @@ function onHomeyReady(homeyReady){
                 }
             },
             async addLog(device) {
-                await console.log('addLog: ' + device.id, device.name, device.class)
+                console.log('addLog: ' + device.id, device.name, device.class)
                 await this.devicesLogged.push(device);
                 await Homey.set('loggedDevices', this.devicesLogged, (err, result) => {
                     if (err)
@@ -180,7 +207,7 @@ function onHomeyReady(homeyReady){
                 await Homey.set('monitoredPartialDevices', this.devicesMonitoredPartial, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                    console.log('removeMonitorPartial: ' + device.name + ' removed from monitoredPartialDevices');
+                   console.log('removeMonitorPartial: ' + device.name + ' removed from monitoredPartialDevices');
                 })
                 var removeDelayNeeded = true;
                 for (i = 0; i < this.devicesMonitoredFull.length; i++) {
@@ -202,9 +229,8 @@ function onHomeyReady(homeyReady){
                 await Homey.set('delayedDevices', this.devicesDelayed, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                    console.log('removeDelay: Delay removed from' + device.name);
+                   console.log('removeDelay: Delay removed from' + device.name);
                 })
-                
             },
             async removeLog(device) {
                 var i;
@@ -216,9 +242,8 @@ function onHomeyReady(homeyReady){
                 await Homey.set('loggedDevices', this.devicesLogged, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                    console.log('removeLog: Logging removed from: ' + device.name);
+                   console.log('removeLog: Logging removed from: ' + device.name);
                 })
-                
             },
             isMonitoredFull(obj) {
                 var i;
@@ -262,11 +287,8 @@ function onHomeyReady(homeyReady){
             }
         },
         mounted() {
-            this.getLoggedDevices();
-            this.getMonitoredFullDevices();
-            this.getMonitoredPartialDevices();
-            this.getDelayedDevices();
             this.getDevices();
+            this.getDeviceSettings();
         },
         computed: {
             filteredItems() {
@@ -277,35 +299,15 @@ function onHomeyReady(homeyReady){
 }
 
 function showTab(tab){
-    // clean this up!
-    if( tab == "tab1") {
-        document.getElementById("tab1").style="display:block";
-        document.getElementById("tab2").style="display:none";
-        document.getElementById("tab3").style="display:none";
-        document.getElementById("tab1b").className="tab tab-active";
-        document.getElementById("tab2b").className="tab tab-inactive";
-        document.getElementById("tab3b").className="tab tab-inactive";
-    }
-    else if ( tab == "tab2" ) {
-        document.getElementById("tab1").style="display:none";
-        document.getElementById("tab2").style="display:block";
-        document.getElementById("tab3").style="display:none";
-        document.getElementById("tab1b").className="tab tab-inactive";
-        document.getElementById("tab2b").className="tab tab-active";
-        document.getElementById("tab3b").className="tab tab-inactive";
-    }
-    else if ( tab == "tab3" ) {
-        document.getElementById("tab1").style="display:none";
-        document.getElementById("tab2").style="display:none";
-        document.getElementById("tab3").style="display:block";
-        document.getElementById("tab1b").className="tab tab-inactive";
-        document.getElementById("tab2b").className="tab tab-inactive";
-        document.getElementById("tab3b").className="tab tab-active";
-    }
-
+    $('.tab').removeClass('tab-active')
+    $('.tab').addClass('tab-inactive')
+    $('#tabb' + tab).removeClass('tab-inactive')
+    $('#tabb' + tab).addClass('active')
+    $('.panel').hide()
+    $('#tab' + tab).show()
 }
 
-function getSettings() {
+function getStatus() {
     Homey.get('surveillanceStatus', function( err, surveillanceStatus ) {
         if( err ) return Homey.alert( err );
         surveillance = surveillanceStatus;
@@ -337,75 +339,9 @@ function getSettings() {
     })
 }
 
-function getTriggerDelay() {
-    Homey.get('triggerDelay', function ( err, savedTriggerDelay ) {
-        if (triggerDelay != null) {
-            triggerDelay = savedTriggerDelay;
-        }
-        else {
-            triggerDelay = 30;
-        }
-        document.getElementById("triggerDelay").value = triggerDelay;
-    })
-}
-
-function getLogArmedOnly() {
-    Homey.get('logArmedOnly', function( err, logArmedOnly ) {
-        if( err ) return Homey.alert( err );
-        document.getElementById("logArmedOnly").checked = logArmedOnly;
-    })
-}
-
-function getLogTrueOnly() {
-    Homey.get('logTrueOnly', function( err, logTrueOnly ) {
-        if( err ) return Homey.alert( err );
-        document.getElementById("logTrueOnly").checked = logTrueOnly;
-    })
-}
-
-function getDelayArming() {
-    Homey.get('delayArming', function( err, logTrueOnly ) {
-        if( err ) return Homey.alert( err );
-        document.getElementById("delayArming").checked = logTrueOnly;
-    })
-}
-
 function getLanguage() {
     console.log('language: ' + language);
     document.getElementById("instructions"+language).style.display = "inline";
-}
-
-function setSurveillanceMode() {
-    surveillance = !surveillance;
-    Homey.set('surveillanceStatus', surveillance, function( err ){
-        if( err ) return Homey.alert( err );
-    });
-    if( surveillance) {
-        document.getElementById("surveillanceMode").className = "btn wide btn-active";
-        writeHistory(document.getElementById("spanSurvActivated").innerText);
-    }
-    else {
-        document.getElementById("surveillanceMode").className = "btn wide btn-inactive";
-        writeHistory(document.getElementById("spanSurvDeactivated").innerText);
-        // Cleanup
-        alarm=false;
-        Homey.set('alarmStatus', alarm, function( err ){
-            if( err ) return Homey.alert( err );
-        });
-    } 
-}
-
-function writeHistory(line) {
-    let nu = getDateTime();
-    let logNew = nu + surveillance + " || " + line;
-    Homey.get('myLog', function(err, logging){
-        if( err ) return console.error('writeHistory: Could not get history', err);
-        if (logging != undefined) { 
-            logNew = logNew+"\n"+logging;
-        }
-        Homey.set('myLog', logNew );
-    })
-    refreshHistory();
 }
 
 function changeTriggerDelay() {
@@ -413,46 +349,32 @@ function changeTriggerDelay() {
     console.log('Triggerdelay: ' + newTriggerDelay)
     if (isNaN(newTriggerDelay) || newTriggerDelay < 0 || newTriggerDelay > 120) {
         document.getElementById("triggerDelay").value = triggerDelay;
-        Homey.alert(document.getElementById("spanSecondsFail").innerHTML);
+        Homey.alert(Homey.__("tab2.settings.secondsFail") );
     } else {
-        triggerDelay = newTriggerDelay
-        Homey.set('triggerDelay', triggerDelay, function( err ){
-            if( err ) return Homey.alert( err );
-        });
-        Homey.alert(document.getElementById("spanSaveSucces").innerHTML);
+        saveSettings();
+        Homey.alert(Homey.__("tab2.settings.saveSucces"));
     }
 }
 
-function changeLogArmedOnly() {
-    let newValue = document.getElementById("logArmedOnly").checked
-    if ( newValue ) {
-        Homey.set('logArmedOnly', true, function( err ){
-            if( err ) return Homey.alert( err );
-        })
-    }
-    else {
-        Homey.set('logArmedOnly', false, function( err ){
-            if( err ) return Homey.alert( err );
-        })
-    }
-}
-
-function changeLogTrueOnly() {
-    let newValue = document.getElementById("logTrueOnly").checked
-    Homey.set('logTrueOnly', newValue, function( err ){
-        if( err ) return Homey.alert( err );
-    });
-}
-
-function changeDelayArming() {
-    let newValue = document.getElementById("delayArming").checked
-    Homey.set('delayArming', newValue, function( err ){
-        if( err ) return Homey.alert( err );
-    });
+function saveSettings() {
+    heimdallSettings.autorefresh = document.getElementById('autoRefresh').checked;
+    heimdallSettings.useColors = document.getElementById('useColors').checked;
+    heimdallSettings.triggerDelay = document.getElementById('triggerDelay').value;
+    heimdallSettings.delayArming = document.getElementById('delayArming').checked;
+    heimdallSettings.logArmedOnly = document.getElementById('logArmedOnly').checked;
+    heimdallSettings.logTrueOnly = document.getElementById('logTrueOnly').checked;
+    heimdallSettings.spokenSmodeChange = document.getElementById('spokenSmodeChange').checked;
+    heimdallSettings.spokenAlarmCountdown = document.getElementById('spokenAlarmCountdown').checked;
+    heimdallSettings.spokenArmCountdown = document.getElementById('spokenArmCountdown').checked;
+    heimdallSettings.spokenAlarmChange = document.getElementById('spokenAlarmChange').checked;
+    heimdallSettings.spokenMotionTrue = document.getElementById('spokenMotionTrue').checked;
+    heimdallSettings.spokenDoorOpen = document.getElementById('spokenDoorOpen').checked;
+    Homey.set('settings', heimdallSettings );
 }
 
 function clearHistory(){
     Homey.set('myLog', '');
+    showHistory(0);
 };
 
 function downloadHistory(){
@@ -460,21 +382,65 @@ function downloadHistory(){
 };
 
 function refreshHistory(){
-  if (document.getElementById("show_refresh").checked === true){
-    showHistory()
-  }
-  getSettings();
-  setTimeout(refreshHistory, 1000);
+    if ( dashboardVisible == true ) {
+        if ( document.getElementById("autoRefresh").checked ){
+            showHistory()
+        }
+        getStatus();
+    }
+    setTimeout(refreshHistory, 1000);
 }
 
-function showHistory() {
-  Homey.get('myLog', function(err, logging){
-      if( err ) return console.error('showHistory: Could not get history', err);
-      if (_myLog !== logging){
+function changeAutoRefresh() {
+    if (document.getElementById("autoRefresh").checked === true ){
+        document.getElementById("buttonRefresh").style = "display:none";
+    } else {
+        document.getElementById("buttonRefresh").style = "display:block";
+    }
+    saveSettings();
+    showHistory(0);
+}
+
+function changeUseColor() {
+    saveSettings();
+    showHistory(1);
+}
+function showHistory(run) {
+    Homey.get('myLog', function(err, logging){
+    if( err ) return console.error('showHistory: Could not get history', err);
+    if (_myLog !== logging || run == 1 ){
         _myLog = logging
-        // Need work here
+        // Need work here -> done!
         document.getElementById('logtextarea').value = logging;
-      }
+        
+        let color = ""
+        let htmlstring = "" 
+        let historyArray = logging.split("\n")
+        let dark = false
+        let headerstring = '<div class="rTableRow"><div class="rTableCell line rTableHead">' + Homey.__("tab1.history.date") + '</div><div class="rTableCell line rTableHead">' + Homey.__("tab1.history.time") + '</div><div class="rTableCell line rTableHead">' + Homey.__("tab1.history.smode") + '</div><div class="rTableCell line rTableHead">' + Homey.__("tab1.history.source") + '</div><div class="rTableCell line rTableHead">' + Homey.__("tab1.history.action") + '</div></div>'
+      
+        historyArray.forEach(element => {
+            element = element.replace(/ \|\| /g,'</div><div class="rTableCell line">')
+            if ( element != "") {
+                if ( dark ) {
+                    color = element.substr(0,3)
+                    color = color.replace("-","d")
+                    dark = false
+                } else {
+                    color = element.substr(0,3)
+                    color = color.replace("-","l")
+                    dark = true
+                }
+                element = element.substr(3, element.length - 3 )
+                if (document.getElementById("useColors").checked === false){
+                    color = ""
+                }
+                htmlstring = htmlstring + '<div class="rTableRow ' + color + '"><div class="rTableCell line">' + element + "</div></div>"
+            }
+        });
+        htmlstring = headerstring + htmlstring
+        document.getElementById('historyTable').innerHTML = htmlstring
+    }
   });
 }
 
