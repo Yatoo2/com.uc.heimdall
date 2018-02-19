@@ -305,6 +305,11 @@ function showTab(tab){
     $('#tabb' + tab).addClass('active')
     $('.panel').hide()
     $('#tab' + tab).show()
+    if ( tab == 1 ) {
+        dashboardVisible = true
+    } else {
+        dashboardVisible = false
+    }
 }
 
 function getStatus() {
