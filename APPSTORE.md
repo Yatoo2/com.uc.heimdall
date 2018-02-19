@@ -26,7 +26,7 @@ Please post your questions/remarks on the [Athom community forum](https://forum.
 
 ## Changes for current version 1.0.1
 * No functional changes, previous beta promoted to stable (1.0.0)
-* Incremented version number to get a smoother upgrade (1.0.1)
+* Incremented version number to get a smoother upgrade experience (1.0.1)
 
 An extensive changelog and more detailed technical information available at the [Github app page](https://github.com/daneedk/com.uc.heimdall)
 
