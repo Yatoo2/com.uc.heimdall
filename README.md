@@ -19,6 +19,9 @@ All detected motion and open/closed doors and windows on selected sensors will b
 - [ ] Look into adding other sensors like smoke/heat/flood.
 - [ ] ..
 
+## Version 1.0.1
+* Incremented version number to get a smoother upgrade (1.0.1)
+
 ## Version 1.0.0
 * No functional changes, previous beta promoted to stable
 
