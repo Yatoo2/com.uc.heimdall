@@ -303,7 +303,12 @@ function onHomeyReady(homeyReady){
                 try {
                     var test = device.capabilitiesObj
                     console.log(test)
-                    return true
+                    if ( device.capabilitiesObj == null ) { 
+                        console.log("Error: capabilitiesObj in " + device.name + " is NULL ")
+                        return false
+                    } else {
+                        return true
+                    }
                 } catch(e) {
                     console.log("Error: capabilitiesObj in " + device.name + " is NULL ")
                     return false
