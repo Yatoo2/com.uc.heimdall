@@ -308,13 +308,10 @@ function onHomeyReady(homeyReady){
                         return false
                     }
                     */
-
-                    /*
+                    
                     return device.ready
-                    */
-                   
+                    /*
                     var test = device.capabilitiesObj
-                    console.log(test)
                     if ( device.capabilitiesObj == null ) { 
                         console.log("capabilitiesObj in " + device.name + " is NULL ")
                         console.log("device.ready: " + device.ready)
@@ -322,13 +319,12 @@ function onHomeyReady(homeyReady){
                     } else {
                         return true
                     }
+                    */
                 } catch(e) {
                     console.log("Error: capabilitiesObj in " + device.name + " is NULL ")
                     console.log("Error: device.ready: " + device.ready)
                     return false
                 }
-
-                //return device
             },
             getZone: function(zoneId) {
                 var result = "unknown";
