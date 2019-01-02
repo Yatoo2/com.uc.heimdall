@@ -301,16 +301,30 @@ function onHomeyReady(homeyReady){
             },
             filterArray(device) {
                 try {
+                    /*
+                    if ( device.ready ) {
+                        return true
+                    } else {
+                        return false
+                    }
+                    */
+
+                    /*
+                    return device.ready
+                    */
+                   
                     var test = device.capabilitiesObj
                     console.log(test)
                     if ( device.capabilitiesObj == null ) { 
-                        console.log("Error: capabilitiesObj in " + device.name + " is NULL ")
+                        console.log("capabilitiesObj in " + device.name + " is NULL ")
+                        console.log("device.ready: " + device.ready)
                         return false
                     } else {
                         return true
                     }
                 } catch(e) {
                     console.log("Error: capabilitiesObj in " + device.name + " is NULL ")
+                    console.log("Error: device.ready: " + device.ready)
                     return false
                 }
 
