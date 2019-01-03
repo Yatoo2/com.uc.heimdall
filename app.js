@@ -164,13 +164,17 @@ class Heimdall extends Homey.App {
     // Add device function, all device types with motion-, contact-, vibration- and tamper capabilities are added.
     addDevice(device) {
         try {
-            if ( device.data.id === 'sMode' ) {
+            // temporary fix for https://github.com/athombv/homey-apps-sdk-issues/issues/19
+            // if ( device.data.id === 'sMode' ) {
+            if ( device.driverId === 'surveillanceModeSwitch' ) {
                 sModeDevice = device;
                 this.log('Found Mode Switch named:    ' + device.name)
             }
         } catch(e) {}
         try {
-            if ( device.data.id === 'aMode' ) {
+            // temporary fix for https://github.com/athombv/homey-apps-sdk-issues/issues/19
+            // if ( device.data.id === 'aMode' ) { 
+            if ( device.driverId === 'alarmOffSwitch' ) {
                 aModeDevice = device;
                 this.log('Found Alarm Button named:   ' + device.name)
             }
