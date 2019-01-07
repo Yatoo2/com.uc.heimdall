@@ -4,7 +4,7 @@
     "description": "This app turns homey into a simple surveillance system",
     "main": "app.js",
     "dependencies": {
-        "athom-api": "^2.1.140"
+        "athom-api": "^2.1.147"
     },
     "author": "Danee de Kruyff <daneedekruyff@outlook.com>",
     "license": "MIT"

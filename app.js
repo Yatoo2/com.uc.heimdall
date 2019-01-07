@@ -1,6 +1,8 @@
 'use strict';
 
 const Homey = require('homey');
+
+// Load the correct version of the `athom-api` module.
 const { HomeyAPI  } = require('athom-api')
 
 // Flow triggers
@@ -163,22 +165,17 @@ class Heimdall extends Homey.App {
 
     // Add device function, all device types with motion-, contact-, vibration- and tamper capabilities are added.
     addDevice(device) {
-        try {
-            // temporary fix for https://github.com/athombv/homey-apps-sdk-issues/issues/19
-            // if ( device.data.id === 'sMode' ) {
-            if ( device.driverId === 'surveillanceModeSwitch' ) {
-                sModeDevice = device;
-                this.log('Found Mode Switch named:    ' + device.name)
-            }
-        } catch(e) {}
-        try {
-            // temporary fix for https://github.com/athombv/homey-apps-sdk-issues/issues/19
-            // if ( device.data.id === 'aMode' ) { 
-            if ( device.driverId === 'alarmOffSwitch' ) {
-                aModeDevice = device;
-                this.log('Found Alarm Button named:   ' + device.name)
-            }
-        } catch(e) {}
+        // Find Surveillance Mode Switch
+        if ( device.data.id === 'sMode' ) {
+            sModeDevice = device;
+            this.log('Found Mode Switch named:    ' + device.name)
+        }
+
+        // Find Alarm Off Button
+        if ( device.data.id === 'aMode' ) { 
+            aModeDevice = device;
+            this.log('Found Alarm Button named:   ' + device.name)
+        }
 
         // console.log(device.capabilities.indexOf("alarm_motion"))
         if ( 'alarm_motion' in device.capabilitiesObj ) {
