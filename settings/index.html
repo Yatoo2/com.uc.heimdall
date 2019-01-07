@@ -374,40 +374,40 @@
                         <ul>
                             <li><b>Create a Surveillance Mode Switch</b></li>
                             <ul><li>
-                                Click on the <i>add a device</i> icon in your desired zone and select the <i>Mode</i> device from the Heimdall app.<br>
-                                You can rename the device, clicking on <i>next</i> will add it to Homey. 
+                                Click on the <i>add a device</i> button in your desired zone on the Devices page and select the <i>Mode</i> device from the Heimdall app.<br>
+                                Click on <i>Install</i> to procede followed by clicking on <i>next</i>.
                             </li></ul>
                             <li><b>Select the device(s) you want to monitor</b></li>
                             <ul><li>
-                                Go to the settings page and click on the <i>log</i> button if you just want a line in the log when the device state changes.
+                                Go to the Devices tab in Heimdall's settings page and click on the <i>log</i> button if you just want a line in the log when the device state changes.
                                 Click on the <i>Full</i> button if you want the device included when the Surveillance mode is set to <i>Armed</i>
                                 If you want the device included when the Surveillance mode is set to <i>Partially Armed</i> click the <i>Partial</i> button.
                                 It is possible to select both <i>Full</i> and <i>Partial</i> for one device.
                                 If you want to have a delay between the triggering of a device and activating the alarm you can 
-                                enable a delay by clicking on the <i>no</i> button in the Delayed Trigger column.<br />
-                                The delay that is used can be found on the top of the settings page, it is in seconds and ranges from 0-300 seconds.<br />
+                                enable a delay by clicking on the <i>Delay</i> button.<br />
+                                The delay that is used can be found on the top of the Settings tab, it is in seconds and ranges from 0-300 seconds.<br />
                             </li></ul>
                             <li><b>Create a flow to enable the Surveillance Mode</li>
                             <ul><li>
                                 Heimdall will listen to the selected sensors and will log state changes, depending on the selected options on the settings page. 
                                 Only when Heimdall is in Surveillance Mode a trigger on a sensor will lead to an alarm.
-                                Go to the Homey Flow page and create a flow to enable the Surveillance Mode by using the <i>Set state</i> 
-                                card from the Surveillance Mode Switch and selecting the desired state in the <i>...then</i> column.
+                                Go to the Homey Flows page and create a flow to set the Surveillance Mode by using the <i>Set Surveillance Mode</i> 
+                                card from the Surveillance Mode Switch and selecting the desired state in the <i>...then</i> part.
                             </li></ul>
                             <li><b>Create a flow to disable the Surveillance Mode</b></li>
                             <ul><li>
-                                To be able to disable the Surveillance Mode with a flow you have to create one and use the <i>Set state</i> 
-                                card from the Surveillance Mode Switch and selecting the <i>Disarmed</i> state in the <i>...then</i> column.
+                                To be able to disable the Surveillance Mode with a flow you have to create one and use the <i>Set Surveillance Mode</i> 
+                                card from the Surveillance Mode Switch and selecting the <i>Disarmed</i> state in the <i>...then</i> part.
                             </li></ul>
                             <li><b>Create a flow to act on an alarm</b></li>
                             <ul><li>
                                 You can decide for yourself what you want Homey to do when the alarm is activated. 
-                                Create a flow and use the <i>The alarm is activated.</i> card in the <i>when...</i> column and select your desired actions in the <i>then...</i> column.<br />
+                                Create a flow and use the <i>The alarm is activated.</i> card in the <i>when...</i> part and select your desired actions in the <i>then...</i> part.<br />
                                 You can use the tag <i>Reason</i> on the trigger card to inform you which device activated the alarm.
                             </li></ul>
                             <li><b>Create a flow to disable the alarm</b></li>
                             <ul><li>
-                                To deactivate the alarm use the <i>Deactivate Alarm</i> card in a flow in the <i>...then</i> column.
+                                To deactivate the alarm use the <i>Deactivate Alarm</i> card in a flow in the <i>...then</i> part.
                             </li></ul>
                             <li><b>Add an Alarm Off Button</b></li>
                             <ul><li>
@@ -416,7 +416,7 @@
                             <li><b>Log other information</b></li>
                             <ul><li>
                                 If you like to log more information, for example presence information, 
-                                you can use the <i>Send information to Heimdall</i> card in a flow in the <i>...then</i> column.
+                                you can use the <i>Send information to Heimdall</i> card in a flow in the <i>...then</i> part.
                             </li></ul>
                         </ul>
                     </div>
