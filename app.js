@@ -1,9 +1,8 @@
 'use strict';
 
 const Homey = require('homey');
-
-// Load the correct version of the `athom-api` module.
 const { HomeyAPI  } = require('athom-api')
+const delay = time => new Promise(res=>setTimeout(res,time));
 
 // Flow triggers
 let triggerSurveillanceChanged = new Homey.FlowCardTrigger('SurveillanceChanged');
@@ -53,6 +52,10 @@ var defaultSettings = {
     "spokenDoorOpen": false,
     "spokenMotionAtArming": false,
     "spokenDoorOpenAtArming": false,
+    "notificationSmodeChange": false,
+    "notificationAlarmChange": false,
+    "notificationNoCommunicationMotion": false,
+    "notificationNoCommunicationContact": false,
     "noCommunicationTime": 24
 };
 var sModeDevice;
@@ -129,19 +132,10 @@ class Heimdall extends Homey.App {
             await console.log('New device found!')
             // V1 - const device = await api.devices.getDevice({id: id})
 
-            var device = await api.devices.getDevice({id: id.id})
+            // V2 - var device = await api.devices.getDevice({id: id.id})
+            var device = await this.waitForDevice(id)
 
-            // crapy code because a device.create is emitted before a device is fuly added
-            // https://github.com/athombv/homey-apps-sdk-issues/issues/23
-            if (!device.ready) {
-                setTimeout(async function(){
-                    device = await api.devices.getDevice({id: id.id})
-                    console.log(device)
-                    await Homey.app.addDevice(device);
-                }, 2000);
-            }
-            
-            //await this.addDevice(device);
+            await this.addDevice(device);
         });
         
         // before reading a newly created device you should wait until a device is ready, this is not emited though
@@ -155,12 +149,20 @@ class Heimdall extends Homey.App {
         });
         let allDevices = await this.getDevices();
 
-        //console.log(allDevices)
-
         for (let device in allDevices) {
             this.addDevice(allDevices[device])
         };
         this.log('Enumerating devices done.')
+    }
+
+    // Yolo function courtesy of Robert Klep ;)
+    async waitForDevice(id) {
+        const device = await this.api.devices.getDevice({ id: id.id });
+        if (device.ready) {
+          return device;
+        }
+        await delay(1000);
+        return this.waitForDevice(id);
     }
 
     // Add device function, all device types with motion-, contact-, vibration- and tamper capabilities are added.
@@ -327,9 +329,10 @@ class Heimdall extends Homey.App {
                         console.log('Alarm is triggered:         Yes')
                         let zone = await this.getZone(device.zone)
                         logLine = "al " + nu + readableMode(surveillance) + " || Heimdall || " + device.name + " in " + zone + Homey.__("history.triggerdalarm")
-                        let message = '**'+device.name+'** in '+ zone + Homey.__("history.triggerdalarm")
-                        this.writeNotification(message)
-
+                        if ( heimdallSettings.notificationAlarmChange  ) {
+                            let message = '**'+device.name+'** in '+ zone + Homey.__("history.triggerdalarm")
+                            this.writeNotification(message)
+                        }
                         if ( sensorType == 'motion' ) {
                             this.speak("motionTrue", device.name + " detected motion") 
                         }
@@ -547,7 +550,7 @@ class Heimdall extends Homey.App {
             let nu = getDateTime();
             let nuEpoch = Date.now();
 
-            //console.log(device.name)
+            console.log("checkDeviceLastCom: " + device.name)
 
             if ( 'alarm_motion' in device.capabilitiesObj || 'alarm_contact' in device.capabilitiesObj ) {
                 let mostRecentComE = 0
@@ -564,13 +567,13 @@ class Heimdall extends Homey.App {
 
                 let mostRecentComH = new Date( mostRecentComE )
                 let verschil = Math.round((nuEpoch - mostRecentComE)/1000)
-                /*
-                console.log("resultaat: " + nuEpoch)
-                console.log("resultaat: " + mostRecentComE)
-                console.log("resultaat: " + verschil)
-                console.log("resultaat: " + verschil*1000)
-                console.log("resultaat: " + heimdallSettings.noCommunicationTime * 3600)
-                */
+                
+                // console.log("resultaat: " + nuEpoch)
+                // console.log("resultaat: " + mostRecentComE)
+                // console.log("resultaat: " + verschil)
+                // console.log("resultaat: " + verschil*1000)
+                // console.log("resultaat: " + heimdallSettings.noCommunicationTime * 3600)
+                
                 if ( verschil > heimdallSettings.noCommunicationTime * 3600 ) {
                     let d = new Date(0);
                     d.setUTCSeconds(Date.parse(mostRecentComH)/1000);
@@ -580,8 +583,14 @@ class Heimdall extends Homey.App {
                     let zone = await this.getZone(device.zone)
                     let tempLogLine = tempColor + nu + readableMode(value) + " || Heimdall || " + device.name + " in " + zone + Homey.__("history.noreport") + heimdallSettings.noCommunicationTime + Homey.__("history.lastreport") + lastUpdateTime
                     this.writeLog(tempLogLine)
-                    let message = '**' + device.name + '** in ' + zone + Homey.__("history.noreport") + heimdallSettings.noCommunicationTime + Homey.__("history.lastreport") + lastUpdateTime
-                    this.writeNotification(message)
+                    if ( heimdallSettings.notificationNoCommunicationMotion && 'alarm_motion' in device.capabilitiesObj ) {
+                        let message = '**' + device.name + '** in ' + zone + Homey.__("history.noreport") + heimdallSettings.noCommunicationTime + Homey.__("history.lastreport") + lastUpdateTime
+                        this.writeNotification(message)
+                    }
+                    if ( heimdallSettings.notificationNoCommunicationContact && 'alarm_contact' in device.capabilitiesObj ) {
+                        let message = '**' + device.name + '** in ' + zone + Homey.__("history.noreport") + heimdallSettings.noCommunicationTime + Homey.__("history.lastreport") + lastUpdateTime
+                        this.writeNotification(message)
+                    }
 
                     var tokens = {'Zone': zone, 'Device': device.name, 'LastUpdate': lastUpdateTime, 'Duration': heimdallSettings.noCommunicationTime};
                     triggerNoInfoReceived.trigger(tokens, function(err, result){
@@ -609,8 +618,10 @@ class Heimdall extends Homey.App {
             //speak("sModeChange", "The surveillance mode is set to " + readableMode(value)) 
             this.speak("sModeChange", Homey.__("speech.smodeset") + readableMode(value))
             this.log('setSurveillanceValue:       '+ value)
-            let message = '**Surveillance Mode** set to ' + readableMode(value)
-            this.writeNotification(message)
+            if ( heimdallSettings.notificationSmodeChange ) {
+                let message = '**Surveillance Mode** set to ' + readableMode(value)
+                this.writeNotification(message)
+            }
             var tokens = { 'mode': readableMode(value) };
             triggerSurveillanceChanged.trigger(tokens, function(err, result){
                 if( err ) {
@@ -720,8 +731,10 @@ class Heimdall extends Homey.App {
                 }); 
             let logLine = "ao "+ nu + readableMode(surveillance) + " || " + source + " || " + Homey.__("history.alarmdeactivated") + source
             this.writeLog(logLine)
-            let message = Homey.__("history.alarmdeactivated") + '**' + source + '**'
-            this.writeNotification(message)
+            if ( heimdallSettings.notificationAlarmChange ) {
+                let message = Homey.__("history.alarmdeactivated") + '**' + source + '**'
+                this.writeNotification(message)
+            }
         }
     }
 

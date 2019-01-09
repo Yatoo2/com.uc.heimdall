@@ -47,7 +47,8 @@
                 "delays": "Delays",
                 "loging": "Loging",
                 "check": "Pre-Arming check",
-                "speech": "Let Homey tell you when"
+                "speech": "Let Homey tell you when",
+                "notifications": "Write to Timeline when"
             },
             "title": "Settings",
             "arDelay": "Arming delay",
@@ -75,6 +76,13 @@
             "dooropen": "a door or window is opened when armed",
             "motionatarming": "a motion sensor is active when arming",
             "dooropenatarming": "a door or window is open when arming"
+        },
+        "notification": {
+            "smodechange": "the Surveillance Mode changed",
+            "alarmchange": "the Alarm is activated or deactivated",
+            "nocommunicationmotion": "A motion device hasn't communicated",
+            "nocommunicationcontact": "A contact device hasn't communicated",
+            "nocommunicationdescription": "When a Surveillance Mode is selected Heimdall checks if the devices have communicated in the last 24 hours."
         }
     },
     "tab4": {

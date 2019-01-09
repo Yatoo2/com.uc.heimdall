@@ -114,7 +114,7 @@
             </div>
             <div id="tab3" class="panel" style="display: none;">
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.delays" class="text-description">-Delays-</div>
+                <div data-i18n="tab3.settings.settingsgroup.delays" class="text-header">-Delays-</div>
                 <div class="settings-itemgroup">
                     <div class="sTableCell inputs">
                         <label data-i18n="tab3.settings.arDelay">-Arming delay:-</label><br />
@@ -160,7 +160,7 @@
                     </div>
                 </div>
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.loging" class="text-description">-Loging-</div>
+                <div data-i18n="tab3.settings.settingsgroup.loging" class="text-header">-Loging-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
@@ -204,7 +204,7 @@
                 </div>
 
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.check" class="text-description">-Sensor check-</div>
+                <div data-i18n="tab3.settings.settingsgroup.check" class="text-header">-Sensor check-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
@@ -246,7 +246,64 @@
                 </div>   
                 
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.speech" class="text-description">-Speech-</div>
+                <div data-i18n="tab3.settings.settingsgroup.notifications" class="text-header">-Notifications-</div>
+                <div class="settings-itemgroup">
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab3.notification.smodechange">-the Surveillance Mode changed-</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="notificationSmodeChange" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-item"><div class="settings-item-divider"></div><div class="settings-item-divider"></div></div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab3.notification.alarmchange">-the alarm is activated-</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="notificationAlarmChange" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-item"><div class="settings-item-divider"></div><div class="settings-item-divider"></div></div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab3.notification.nocommunicationmotion">-A motion device hasn't communicated-</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="notificationNoCommunicationMotion" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div><div class="settings-item"><div class="settings-item-divider"></div><div class="settings-item-divider"></div></div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-text">
+                            <span data-i18n="tab3.notification.nocommunicationcontact">-A motion device hasn't communicated-</span>
+                        </div>
+                        <div class="settings-item-last">
+                            <label class="form-switch">
+                                <input id="notificationNoCommunicationContact" type="checkbox" onclick="saveSettings()">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-description">
+                    <span data-i18n="tab3.notification.nocommunicationdescription">-Description goes here-</span>
+                </div>
+
+                <div class="settings-spacer"></div>
+                <div data-i18n="tab3.settings.settingsgroup.speech" class="text-header">-Speech-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
@@ -364,6 +421,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div id="tab4" class="panel" style="display: none;">
                 <fieldset class="listContainer">

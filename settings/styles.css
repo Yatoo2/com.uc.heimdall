@@ -12,9 +12,19 @@ body {
     background-color: rgb(239,239,243)
 }
 
+.text-header {
+    color: rgb(109,109,113);
+    margin-top: 7px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
 .text-description {
     color: rgb(109,109,113);
     padding-left: 10px;
+    padding-right: 10px;
+    -webkit-text-size-adjust: 90%;
+    -ms-text-size-adjust: 90%;
 }
 
 .settings-spacer {
@@ -26,7 +36,7 @@ body {
     width: 100%;
     background-color: rgb(255,255,255);
     margin-top: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     border-style: solid;
     border-top-width: 1px;
     border-left-style: none;

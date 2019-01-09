@@ -26,7 +26,11 @@ var defaultSettings = {
     "spokenAlarmChange": false,
     "spokenMotionTrue": false,
     "spokenTamperTrue": false,
-    "spokenDoorOpen": false
+    "spokenDoorOpen": false,
+    "notificationSmodeChange": false,
+    "notificationAlarmChange": false,
+    "notificationNoCommunicationMotion": false,
+    "notificationNoCommunicationContact": false
 };
 
 function onHomeyReady(homeyReady){
@@ -64,6 +68,10 @@ function onHomeyReady(homeyReady){
         document.getElementById('spokenDoorOpen').checked = heimdallSettings.spokenDoorOpen;
         document.getElementById('spokenMotionAtArming').checked = heimdallSettings.spokenMotionAtArming;
         document.getElementById('spokenDoorOpenAtArming').checked = heimdallSettings.spokenDoorOpenAtArming;
+        document.getElementById('notificationSmodeChange').checked = heimdallSettings.notificationSmodeChange
+        document.getElementById('notificationAlarmChange').checked = heimdallSettings.notificationAlarmChange
+        document.getElementById('notificationNoCommunicationMotion').checked = heimdallSettings.notificationNoCommunicationMotion
+        document.getElementById('notificationNoCommunicationContact').checked = heimdallSettings.notificationNoCommunicationContact
         if ( document.getElementById('autoRefresh').checked ) {
             document.getElementById("buttonRefresh").style = "display:none";
         } else {
@@ -471,6 +479,11 @@ function saveSettings() {
     heimdallSettings.spokenDoorOpen = document.getElementById('spokenDoorOpen').checked;
     heimdallSettings.spokenMotionAtArming = document.getElementById('spokenMotionAtArming').checked;
     heimdallSettings.spokenDoorOpenAtArming = document.getElementById('spokenDoorOpenAtArming').checked;
+    heimdallSettings.notificationSmodeChange = document.getElementById('notificationSmodeChange').checked;
+    heimdallSettings.notificationAlarmChange = document.getElementById('notificationAlarmChange').checked;
+    heimdallSettings.notificationNoCommunicationMotion = document.getElementById('notificationNoCommunicationMotion').checked;
+    heimdallSettings.notificationNoCommunicationContact = document.getElementById('notificationNoCommunicationContact').checked; 
+    heimdallSettings.noCommunicationTime = 24;
     if ( heimdallSettings.spokenMotionAtArming ) {
         document.getElementById('checkMotionAtArming').checked = true
         heimdallSettings.checkMotionAtArming = true
