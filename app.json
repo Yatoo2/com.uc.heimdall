@@ -418,6 +418,18 @@
 				"en": "Check Last Communication",
 				"nl": "Controleer laatste communicatie"
 			}
+		},
+		{
+			"id": "SendNotification",
+			"title": {
+				"en": "Send information to Timeline",
+				"nl": "Stuur informatie naar Timeline"
+			},
+			"args": [{
+				"name": "log",
+				"type": "text",
+				"example": "*Status* message"
+			}]
 		}
 		]
 	},

@@ -28,6 +28,7 @@ const actionClearHistory = new Homey.FlowCardAction('ClearHistory');
 const actionActivateAlarm = new Homey.FlowCardAction('ActivateAlarm');
 const actionDeactivateAlarm = new Homey.FlowCardAction('DeactivateAlarm');
 const actionCheckLastCommunication = new Homey.FlowCardAction('CheckLastCommunication');
+const actionInputNotification = new Homey.FlowCardAction('SendNotification');
 
 var surveillance;
 var alarm = false;
@@ -1082,6 +1083,14 @@ actionCheckLastCommunication
     .register()
     .on('run', ( args, state, callback ) => {
         Homey.app.checkDevicesLastCom(Homey.ManagerSettings.get('surveillanceStatus'))
+        callback( null, true );
+    });
+
+//Flow actions functions
+actionInputNotification
+    .register()
+    .on('run', ( args, state, callback ) => {
+        Homey.app.writeNotification(args.log)
         callback( null, true );
     });
 

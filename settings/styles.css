@@ -1,7 +1,6 @@
 html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -24,7 +23,6 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     -webkit-text-size-adjust: 90%;
-    -ms-text-size-adjust: 90%;
 }
 
 .settings-spacer {
