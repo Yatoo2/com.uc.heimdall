@@ -10,6 +10,7 @@ All detected motion and open/closed doors and windows on selected sensors will b
 ## Supported Languages:
 * English
 * Dutch
+* German
 
 ## How do I get it to work?
 * Add a Surveillance Mode Switch.

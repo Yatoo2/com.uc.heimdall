@@ -1090,7 +1090,7 @@ actionCheckLastCommunication
 actionInputNotification
     .register()
     .on('run', ( args, state, callback ) => {
-        Homey.app.writeNotification(args.log)
+        Homey.app.writeNotification(args.message)
         callback( null, true );
     });
 

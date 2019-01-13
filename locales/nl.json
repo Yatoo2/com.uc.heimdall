@@ -47,7 +47,8 @@
                 "delays": "Vertraging",
                 "loging": "Loggen",
                 "check": "Inschakelcontrole",
-                "speech": "Laat Homey het je vertellen als"
+                "speech": "Laat Homey het je vertellen als",
+                "notifications": "Schrijf naar Tijdlijn"
             },
             "title": "Instellingen",
             "arDelay": "Inschakel vertraging",
@@ -63,9 +64,7 @@
             "delayarmingpartial": "Gebruik vertraging bij Gedeeltelijke mode",            
             "checkMotionAtArming": "Controleer op actieve beweginssensoren bij het inschakelen",
             "checkContactAtArming": "Controleer op open deuren/ramen bij het inschakelen",
-            "checkbeforecountdown": "Voer inschakelcontrole uit voor de inschakelvertraging",
-            "no": "Nee",
-            "yes": "Ja"
+            "checkbeforecountdown": "Voer inschakelcontrole uit voor de inschakelvertraging"
         },
         "speech": {
             "spokenalarmcountdown": "het aftellen naar het activeren van het Alarm loopt",
@@ -77,6 +76,13 @@
             "dooropen": "er een deur of raam geopend wordt als er een Toezicht Mode actief is",
             "motionatarming": "een bewegingssensor actief is bij inschakelen",
             "dooropenatarming": "een deur of raam open is bij inschakelen"
+        },
+        "notification": {
+            "smodechange": "the Surveillance Mode changed",
+            "alarmchange": "the Alarm is activated or deactivated",
+            "nocommunicationmotion": "A motion device hasn't communicated",
+            "nocommunicationcontact": "A contact device hasn't communicated",
+            "nocommunicationdescription": "When a Surveillance Mode is selected Heimdall checks if the devices have communicated in the last 24 hours."
         }
     },
     "tab4": {

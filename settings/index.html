@@ -528,6 +528,53 @@
                             </li></ul>
                         </ul>
                     </div>
+                    <div id="instructionsde" style="display:none">
+                        Um Heimdall zu konfigurieren, bitte wie folgt vorgehen:<br />
+                        <br />
+                        <ul>
+                            <li><b>Überwachungsmodus-Schalter erstellen</b></li>
+                            <ul><li>
+                                Klicke auf den <i>Gerät hinzufügen</i> Button in der gewünschten Zone deiner Geräteseite und wähle den <i>Modus</i> des Gerätes aus der Heimdall App.<br>
+                                Klicke auf <i>Installieren</i> um es hinzuzufügen. Nun klicke auf  <i>nächstes</i>.
+                            </li></ul>
+                            <li><b>Wähle die Geräte, die du überwachen möchtest</b></li>
+                            <ul><li>
+                                Gehe zum Geräte-Kartenreiter in Heimdalls Einstellungen und klicke auf den  <i>Log</i> Button, wenn du nur eine Zeile in das Log bei Statusänderung des Gerätes schreiben willst.
+                                Klicke den <i>Volle</i>-Button, um das Gerät mit dabei zu haben, wenn der Überwachungsmodus auf <i>volle Überwachung</i> steht.
+                                Wenn das Gerät bei der <i>teilweise Überwachung</i> dabei sein soll, klicke den  <i>Teilweise</i>-Button.
+                                Es ist auch möglich, <i>Volle</i> und <i>Teilweise</i> für ein Gerät einzustellen.
+                                Wenn eine Verzögerung zwischen Auslösung und der Aktivierung des Alarms gewünscht ist, kann man die Verzögerung durch Klicken des <i>Verzögerung</i>-Buttons aktivieren.<br />
+                                Die genutzte Verzögerung kann oben bei dem Einstellungs-Kartenreiter gefunden werden. Sie wird in einem Bereich von 0-300 Sekunden angegeben.<br />
+                            </li></ul>
+                            <li><b>Erstelle einen Flow, um den Überwachungsmodus zu aktivieren.</li>
+                            <ul><li>
+                                Heimdall wird die gewählten Sensoren beobachten und deren Status mitloggen, so wie in den Einstellungen gewählt. Nur wenn Heimdall im Überwachungsmodus ist, wird ein Auslöser eines Sensors zu einem Alarm führen.
+                                Gehe zu der Homey Flows Seite und erstelle einen Flow zum Wählen des Überwachungsmodus indem du die <i>Überwachungsmodus wählen</i>-Karte vom Überwachungsmodus-Schalter nutzt und dann den gewünschten Modus in der <i>...then</i> Spalte setzt.
+                            </li></ul>
+                            <li><b>Erstelle einen Flow, um den Überwachungsmodus zu deaktivieren.</b></li>
+                            <ul><li>
+                                Um mit einem Flow den Überwachungsmodus zu deaktivieren, muss man einen Flow erstellen, die <i>Überwachungsmodus wählen</i>-Karte vom Überwachungsmodus-Schalter nutzen und den <i>deaktiviert</i>-Status in der <i>...then</i> Spalte setzen.
+                            </li></ul>
+                            <li><b>Erstelle einen Flow für den Alarm</b></li>
+                            <ul><li>
+                                Man kann selber entscheiden, was man Homey machen lassen will, wenn der Alarm aktiviert bzw. ausgelöst wurde.
+                                Erstelle einen Flow und nutze die <i>Der Alarm ist aktiviert.</i>-Karte in der <i>when...</i>-Spalte und wähle die gewünschte Aktion in der <i>then...</i>-Spalte.<br />
+                                Man kann den Tag <i>Grund</i> auf der Auslöserkarte nutzen, um über das auslösende Gerät informiert zu werden.
+                            </li></ul>
+                            <li><b>Erstelle einen Flow zum Ausschalten des Alarms</b></li>
+                            <ul><li>
+                                Zum Ausschalten des Alarms nutze die <i>Alarm deaktivieren</i>-Karte in einem Flow in der <i>...then</i>-Spalte.
+                            </li></ul>
+                            <li><b>einen Aus-Schalter hinzufügen</b></li>
+                            <ul><li>
+                                Um mit der Homey-App aud dem Smartphone einen Alarm ausschalten zu können, fügt man ein <i>Alarm</i>-Button-Gerät in der gewünschte Zone hinzu.
+                            </li></ul>
+                            <li><b>Andere Information loggen</b></li>
+                            <ul><li>
+                                Wenn man mehr Informationen (zum Beispiel Anwesendheits-Informationen) mitloggen möchte, kann man die <i>Sende Information an Heimdall</i>-Karte in einem Flow in der <i>...then</i> Spalte nutzen.
+                            </li></ul>
+                        </ul>
+                    </div>
                 </fieldset>
             </div>
         </div>
