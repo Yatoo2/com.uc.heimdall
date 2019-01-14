@@ -6,7 +6,7 @@
 	"description": { "en": "This app turns homey into a simple surveillance system" },
 	"category": [ "security", "tools" ],
 	"images": { "large": "assets/images/large.png", "small": "assets/images/small.png" },
-	"version": "1.0.1",
+	"version": "1.0.25",
 	"compatibility": "1.x >=1.5.0",
 	"author": { "name": "Danee de Kruyff", "email": "daneedekruyff@outlook.com" },
 	"contributors": {
@@ -15,8 +15,7 @@
 	"contributing": {
 		"donate": {
 		  "paypal": {
-			"username": "daneedekruyff",
-			"currency": "EUR"
+			"username": "daneedekruyff"
 		  }
 		}
 	  },
@@ -24,6 +23,8 @@
 		"en": [ "Home", "Alarm", "Homeyalarm", "System", "Tools", "Log", "Surveillance"],
 		"nl": [ "Huis", "Alarm", "Homeyalarm", "Systeem", "Beveilig", "Beveiliging", "Toezicht"] 
 	},
+	"athomForumDiscussionId": 4514,
+	"homeyCommunityTopicId": 134,
 	"flow": {
 		"triggers": [
 		{
@@ -43,6 +44,24 @@
 					"example": "Disarmed"
 				}
 			]
+		},
+		{
+			"id": "sensorActiveAtArming",
+			"title": {
+				"en": "Sensor active at arming.",
+				"nl": "sensor actief bij inschakelen."
+			},
+			"tokens": [
+				{
+					"name": "warning",
+					"type": "string",
+					"title": {
+						"en": "Warning",
+						"nl": "Waarschuwing"
+					},
+					"example": "Warning"
+				}
+			]
 		},	
 		{
 			"id": "AlarmActivated",
@@ -57,6 +76,15 @@
 					"title": {
 						"en": "Reason",
 						"nl": "Reden"
+					},
+					"example": "-"
+				},
+				{
+					"name": "Zone",
+					"type": "string",
+					"title": {
+						"en": "Zone",
+						"nl": "Zone"
 					},
 					"example": "-"
 				}
@@ -81,10 +109,10 @@
 			]
 		},
 		{
-			"id": "DelayActivated",
+			"id": "AlarmDelayActivated",
 			"title": {
-				"en": "The delay is activated.",
-				"nl": "De vertraging is geactiveerd."
+				"en": "The alarm delay is activated.",
+				"nl": "De alarm vertraging is geactiveerd."
 			},
 			"tokens": [
 				{
@@ -142,6 +170,114 @@
 					"example": 30
 				}
 			]
+		},
+		{
+			"id": "LogLineWritten",
+			"title":{
+				"en": "A logline was written",
+				"nl": "Een logregel is geschreven"
+			},
+			"tokens": [
+				{
+					"name": "Device",
+					"type": "string",
+					"title": {
+						"en": "Device",
+						"nl": "Apparaat"
+					},
+					"example": "Motion Sensor"
+				},
+				{
+					"name": "State",
+					"type": "string",
+					"title": {
+						"en": "State",
+						"nl": "Satus"
+					},
+					"example": "Motion detected"
+				}
+			]
+		},
+		{
+			"id": "SensorTrippedInAlarmstate",
+			"title": {
+				"en": "Sensor tripped in Alarmstate",
+				"nl": "Sensor actief in Alarmstatus"
+			},
+			"tokens": [
+				{
+					"name": "State",
+					"type": "string",
+					"title": {
+						"en": "State",
+						"nl": "Satus"
+					},
+					"example": "Motion detected"
+				},
+				{
+					"name": "Device",
+					"type": "string",
+					"title": {
+						"en": "Device",
+						"nl": "Apparaat"
+					},
+					"example": "Motion Sensor"
+				},
+				{
+					"name": "Zone",
+					"type": "string",
+					"title": {
+						"en": "Zone",
+						"nl": "Zone"
+					},
+					"example": "-"
+				}
+			]
+		},
+		{
+			"id": "noInfoReceived",
+			"title" :{
+				"en": "No information received",
+				"nl": "Geen informatie ontvangen"
+			},
+			"tokens": [
+				{
+					"name": "Duration",
+					"type": "number",
+					"title": {
+						"en": "Hours no information",
+						"nl": "Uren geen informatie"  
+					},
+					"Example": 12
+				},
+				{
+					"name": "LastUpdate",
+					"type": "string",
+					"title": {
+						"en": "Last update",
+						"nl": "Laatste bericht"  
+					},
+					"Example": " "
+				},
+				{
+					"name": "Device",
+					"type": "string",
+					"title": {
+						"en": "Device",
+						"nl": "Apparaat"
+					},
+					"example": "Motion Sensor"
+				},
+				{
+					"name": "Zone",
+					"type": "string",
+					"title": {
+						"en": "Zone",
+						"nl": "Zone"
+					},
+					"example": "-"
+				}
+			]
 		}
 		],
 		"conditions": [
@@ -180,6 +316,27 @@
 					  	]
 					}
 				]
+			},
+			{
+				"id": "ArmingCountdown",
+				"title": {
+					"en": "Arming countdown !{{active |not active}}",
+					"nl": "Inschakel vertraging !{{actief |niet actief}}"
+				}
+			},
+			{
+				"id": "AlarmCountdown",
+				"title": {
+					"en": "Alarm countdown !{{active |not active}}",
+					"nl": "Alarm vertraging !{{actief |niet actief}}"
+				}
+			},
+			{
+				"id": "AlarmActive",
+				"title": {
+					"en": "Alarm state is !{{active |not active}}",
+					"nl": "Alarm status is !{{actief |niet actief}}"
+				}
 			}
 		],
 		"actions": [
@@ -227,8 +384,8 @@
 		{
 			"id": "SendInfo",
 			"title": {
-				"en": "Send information to Heimdall.",
-				"nl": "Stuur informatie naar Heimdall."
+				"en": "Send information to Heimdall",
+				"nl": "Stuur informatie naar Heimdall"
 			},
 			"args": [{
 				"name": "log",
@@ -238,8 +395,8 @@
 		{
 			"id": "ClearHistory",
 			"title": {
-				"en": "Clear Heimdall history.",
-				"nl": "Verwijder Heimdall geschiedenis."
+				"en": "Clear Heimdall history",
+				"nl": "Verwijder Heimdall geschiedenis"
 			}
 		},
 		{
@@ -282,6 +439,14 @@
 			},
 			"class": "other",
 			"capabilities": [ "homealarm_state", "alarm_heimdall" ],
+			"capabilitiesOptions":  {
+				"homealarm_state": {
+					"preventTag": true					
+				},
+				"alarm_heimdall": {
+					"preventTag": true
+				}
+			},
 			"pair": [
 				{
 					"id": "list_triggers",
@@ -325,7 +490,12 @@
 					"title":{
 						"en": "Turn off",
 						"nl": "Schakel uit"
-					}
+					},
+					"preventTag": true
+				},
+				"alarm_heimdall": {
+					"preventTag": true,
+					"preventInsights": true
 				}
 			},
 			"pair": [

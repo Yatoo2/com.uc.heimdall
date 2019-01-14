@@ -3,21 +3,28 @@ let _myLog;
 let surveillance;
 let alarm;
 var allDevices;
-var triggerDelay = 30;
 var logArmedOnly;
 var logTrueOnly;
 var dashboardVisible = true;
+var illegalValue = false;
 var heimdallSettings = {};
 var defaultSettings = {
-    "triggerDelay": "30",
-    "delayArming": false,
+    "armingDelay": "30",
+    "alarmDelay": "30",
+    "delayArmingFull": false,
+    "delayArmingPartial": false,    
     "logArmedOnly": false,
     "logTrueOnly": false,
+    "useTampering": false,
+    "checkMotionAtArming": false,
+    "checkContactAtArming": false,
+    "checkBeforeCountdown": false,
     "spokenSmodeChange": false,
     "spokenAlarmCountdown": false,
     "spokenArmCountdown": false,
     "spokenAlarmChange": false,
     "spokenMotionTrue": false,
+    "spokenTamperTrue": false,
     "spokenDoorOpen": false
 };
 
@@ -33,21 +40,35 @@ function onHomeyReady(homeyReady){
                 console.log('savedSettings:')
                 console.log(savedSettings)
                 heimdallSettings = savedSettings;
-                
+                // temp
+                if (heimdallSettings.armingDelay == (null || undefined)) {
+                    heimdallSettings.armingDelay = heimdallSettings.triggerDelay
+                    heimdallSettings.alarmDelay = heimdallSettings.triggerDelay
+                }
+                //temp
             }
         }
         document.getElementById('autoRefresh').checked = heimdallSettings.autorefresh;
         document.getElementById('useColors').checked = heimdallSettings.useColors;
-        document.getElementById('triggerDelay').value = heimdallSettings.triggerDelay;
-        document.getElementById('delayArming').checked = heimdallSettings.delayArming;
+        document.getElementById('armingDelay').value = heimdallSettings.armingDelay;
+        document.getElementById('alarmDelay').value = heimdallSettings.alarmDelay;
+        document.getElementById('delayArmingFull').checked = heimdallSettings.delayArmingFull;
+        document.getElementById('delayArmingPartial').checked = heimdallSettings.delayArmingPartial;
         document.getElementById('logArmedOnly').checked = heimdallSettings.logArmedOnly;
         document.getElementById('logTrueOnly').checked = heimdallSettings.logTrueOnly;
+        document.getElementById('useTampering').checked = heimdallSettings.useTampering;
+        document.getElementById('checkMotionAtArming').checked = heimdallSettings.checkMotionAtArming;
+        document.getElementById('checkContactAtArming').checked = heimdallSettings.checkContactAtArming;
+        document.getElementById('checkBeforeCountdown').checked = heimdallSettings.checkBeforeCountdown;
         document.getElementById('spokenSmodeChange').checked = heimdallSettings.spokenSmodeChange;
         document.getElementById('spokenAlarmCountdown').checked = heimdallSettings.spokenAlarmCountdown;
         document.getElementById('spokenArmCountdown').checked = heimdallSettings.spokenArmCountdown;
         document.getElementById('spokenAlarmChange').checked = heimdallSettings.spokenAlarmChange;
         document.getElementById('spokenMotionTrue').checked = heimdallSettings.spokenMotionTrue;
+        document.getElementById('spokenTamperTrue').checked = heimdallSettings.spokenTamperTrue;
         document.getElementById('spokenDoorOpen').checked = heimdallSettings.spokenDoorOpen;
+        document.getElementById('spokenMotionAtArming').checked = heimdallSettings.spokenMotionAtArming;
+        document.getElementById('spokenDoorOpenAtArming').checked = heimdallSettings.spokenDoorOpenAtArming;
         if ( document.getElementById('autoRefresh').checked ) {
             document.getElementById("buttonRefresh").style = "display:none";
         } else {
@@ -113,14 +134,12 @@ function onHomeyReady(homeyReady){
                     }
                 }
                 if ( addDeviceMonitorFull ) {
-                    console.log('addMonitorFull: ' + device.id, device.name, device.class)
                     await this.devicesMonitoredFull.push(device);
                     await Homey.set('monitoredFullDevices', this.devicesMonitoredFull, (err, result) => {
                         if (err)
                             return Homey.alert(err);
                         }
                     )
-                    console.log('addMonitorFull: ' + device.name + ' added to monitoredFullDevices');
                 }
                 this.removeLog(device);
             },
@@ -133,26 +152,22 @@ function onHomeyReady(homeyReady){
                     }
                 }
                 if ( addDeviceMonitorPartial ) {
-                    console.log('addMonitorPartial: ' + device.id, device.name, device.class)
                     await this.devicesMonitoredPartial.push(device);
                     await Homey.set('monitoredPartialDevices', this.devicesMonitoredPartial, (err, result) => {
                         if (err)
                             return Homey.alert(err);
                         }
                     )
-                    console.log('addMonitorPartial: ' + device.name + ' added to monitoredPartialDevices');
                 }
                 this.removeLog(device);
             },
             async addDelay(device) {
-                console.log('addDelay: ' + device.id, device.name, device.class)
                 await this.devicesDelayed.push(device);
                 await Homey.set('delayedDevices', this.devicesDelayed, (err, result) => {
                     if (err)
                         return Homey.alert(err);
                     }
                 )
-                console.log('addDelay: Delay added to ' + device.name);
                 var addMonitorNeeded = true;
                 for (i = 0; i < this.devicesMonitoredPartial.length; i++) {
                     if (this.devicesMonitoredPartial[i] && this.devicesMonitoredPartial[i].id == device.id) {
@@ -164,14 +179,12 @@ function onHomeyReady(homeyReady){
                 }
             },
             async addLog(device) {
-                console.log('addLog: ' + device.id, device.name, device.class)
                 await this.devicesLogged.push(device);
                 await Homey.set('loggedDevices', this.devicesLogged, (err, result) => {
                     if (err)
                         return Homey.alert(err);
                     }
                 )
-                console.log('addLog: Logging added to ' + device.name);
                 this.removeMonitorFull(device);
                 this.removeMonitorPartial(device);
             },
@@ -185,7 +198,6 @@ function onHomeyReady(homeyReady){
                 await Homey.set('monitoredFullDevices', this.devicesMonitoredFull, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                    console.log('removeMonitorFull: ' + device.name + ' removed from monitoredFullDevices');
                 })
                 var removeDelayNeeded = true;
                 for (i = 0; i < this.devicesMonitoredPartial.length; i++) {
@@ -207,7 +219,6 @@ function onHomeyReady(homeyReady){
                 await Homey.set('monitoredPartialDevices', this.devicesMonitoredPartial, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                   console.log('removeMonitorPartial: ' + device.name + ' removed from monitoredPartialDevices');
                 })
                 var removeDelayNeeded = true;
                 for (i = 0; i < this.devicesMonitoredFull.length; i++) {
@@ -229,7 +240,6 @@ function onHomeyReady(homeyReady){
                 await Homey.set('delayedDevices', this.devicesDelayed, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                   console.log('removeDelay: Delay removed from' + device.name);
                 })
             },
             async removeLog(device) {
@@ -242,7 +252,6 @@ function onHomeyReady(homeyReady){
                 await Homey.set('loggedDevices', this.devicesLogged, (err, result) => {
                     if (err)
                         return Homey.alert(err);
-                   console.log('removeLog: Logging removed from: ' + device.name);
                 })
             },
             isMonitoredFull(obj) {
@@ -282,8 +291,24 @@ function onHomeyReady(homeyReady){
                 return false;
             },
             filterArray(device) {
-                if (device.class == "sensor" || device.class == "lock")
+                //if (device.class == "sensor" || device.class == "lock")
                 return device
+            },
+            getBattClass: function(waarde) {
+                if ("number" != typeof waarde)
+                    waarde = "-",
+                    closestClass="100"
+                else {
+                    var s = waarde / 100;
+                    s < 1.1 && (closestClass = "100"),
+                    s < .9 && (closestClass = "80"),
+                    s < .7 && (closestClass = "60"),
+                    s < .5 && (closestClass = "40"),
+                    s < .3 && (closestClass = "20"),
+                    s < .1 && (closestClass = "0"),
+                    waarde = waarde + "%"
+                }  
+                return "<span class=\"component component-battery charge-" + closestClass + "\">"+waarde+"</span>"
             }
         },
         mounted() {
@@ -299,6 +324,10 @@ function onHomeyReady(homeyReady){
 }
 
 function showTab(tab){
+    if ( illegalValue ) {
+        illegalValue = false;
+        return;
+    }
     $('.tab').removeClass('tab-active')
     $('.tab').addClass('tab-inactive')
     $('#tabb' + tab).removeClass('tab-inactive')
@@ -317,28 +346,28 @@ function getStatus() {
         if( err ) return Homey.alert( err );
         surveillance = surveillanceStatus;
         if( surveillance == 'armed') {
-            document.getElementById("surveillanceModeFull").className = "btn wide btn-active";
-            document.getElementById("surveillanceModePartial").className = "btn wide btn-inactive";
+            document.getElementById("surveillanceModeFull").className = "indicator btn-active";
+            document.getElementById("surveillanceModePartial").className = "indicator btn-inactive";
         }
         else if( surveillance == 'partially_armed' ) 
         {
-            document.getElementById("surveillanceModeFull").className = "btn wide btn-inactive";
-            document.getElementById("surveillanceModePartial").className = "btn wide btn-active";
+            document.getElementById("surveillanceModeFull").className = "indicator btn-inactive";
+            document.getElementById("surveillanceModePartial").className = "indicator btn-active";
         }
         else {
-            document.getElementById("surveillanceModeFull").className = "btn wide btn-inactive";
-            document.getElementById("surveillanceModePartial").className = "btn wide btn-inactive";
+            document.getElementById("surveillanceModeFull").className = "indicator btn-inactive";
+            document.getElementById("surveillanceModePartial").className = "indicator btn-inactive";
         }
     })
     Homey.get('alarmStatus', function( err, alarmStatus ) {
         if( err ) return Homey.alert( err );
         alarm = alarmStatus;
         if( alarm) {
-            document.getElementById("alarmMode").className = "btn wide btn-alarm";
+            document.getElementById("alarmMode").className = "indicator ind-alarm";
         }
         else {
-            if (triggerDelay != null) {
-                document.getElementById("alarmMode").className = "btn wide btn-inactive";
+            if (heimdallSettings.armingDelay != null) {
+                document.getElementById("alarmMode").className = "indicator btn-inactive";
             }
         }
     })
@@ -349,31 +378,66 @@ function getLanguage() {
     document.getElementById("instructions"+language).style.display = "inline";
 }
 
-function changeTriggerDelay() {
-    let newTriggerDelay = document.getElementById("triggerDelay").value;
-    console.log('Triggerdelay: ' + newTriggerDelay)
-    if (isNaN(newTriggerDelay) || newTriggerDelay < 0 || newTriggerDelay > 120) {
-        document.getElementById("triggerDelay").value = triggerDelay;
+function changeArmingDelay() {
+    let newArmingDelay = document.getElementById("armingDelay").value;
+    if (isNaN(newArmingDelay) || newArmingDelay < 0 || newArmingDelay > 300) {
+        document.getElementById("armingDelay").value = heimdallSettings.armingDelay;
         Homey.alert(Homey.__("tab2.settings.secondsFail") );
+        illegalValue = true;
     } else {
         saveSettings();
-        Homey.alert(Homey.__("tab2.settings.saveSucces"));
+    }
+}
+
+function changeAlarmDelay() {
+    let newAlarmDelay = document.getElementById("alarmDelay").value;
+    if (isNaN(newAlarmDelay) || newAlarmDelay < 0 || newAlarmDelay > 300) {
+        document.getElementById("alarmDelay").value = heimdallSettings.alarmDelay;
+        Homey.alert(Homey.__("tab2.settings.secondsFail") );
+        illegalValue = true;
+    } else {
+        saveSettings();
     }
 }
 
 function saveSettings() {
     heimdallSettings.autorefresh = document.getElementById('autoRefresh').checked;
     heimdallSettings.useColors = document.getElementById('useColors').checked;
-    heimdallSettings.triggerDelay = document.getElementById('triggerDelay').value;
-    heimdallSettings.delayArming = document.getElementById('delayArming').checked;
+    heimdallSettings.armingDelay = document.getElementById('armingDelay').value;
+    heimdallSettings.alarmDelay = document.getElementById('alarmDelay').value;
+    heimdallSettings.delayArmingFull = document.getElementById('delayArmingFull').checked;
+    heimdallSettings.delayArmingPartial = document.getElementById('delayArmingPartial').checked;
     heimdallSettings.logArmedOnly = document.getElementById('logArmedOnly').checked;
     heimdallSettings.logTrueOnly = document.getElementById('logTrueOnly').checked;
+    heimdallSettings.useTampering = document.getElementById('useTampering').checked;
+    heimdallSettings.checkMotionAtArming = document.getElementById('checkMotionAtArming').checked;
+    heimdallSettings.checkContactAtArming = document.getElementById('checkContactAtArming').checked;
+    heimdallSettings.checkBeforeCountdown = document.getElementById('checkBeforeCountdown').checked;
     heimdallSettings.spokenSmodeChange = document.getElementById('spokenSmodeChange').checked;
     heimdallSettings.spokenAlarmCountdown = document.getElementById('spokenAlarmCountdown').checked;
     heimdallSettings.spokenArmCountdown = document.getElementById('spokenArmCountdown').checked;
     heimdallSettings.spokenAlarmChange = document.getElementById('spokenAlarmChange').checked;
     heimdallSettings.spokenMotionTrue = document.getElementById('spokenMotionTrue').checked;
+    heimdallSettings.spokenTamperTrue = document.getElementById('spokenTamperTrue').checked;
     heimdallSettings.spokenDoorOpen = document.getElementById('spokenDoorOpen').checked;
+    heimdallSettings.spokenMotionAtArming = document.getElementById('spokenMotionAtArming').checked;
+    heimdallSettings.spokenDoorOpenAtArming = document.getElementById('spokenDoorOpenAtArming').checked;
+    if ( heimdallSettings.spokenMotionAtArming ) {
+        document.getElementById('checkMotionAtArming').checked = true
+        heimdallSettings.checkMotionAtArming = true
+    }
+    if ( heimdallSettings.spokenDoorOpenAtArming ) {
+        document.getElementById('checkContactAtArming').checked = true
+        heimdallSettings.checkContactAtArming = true
+    }
+    if ( !heimdallSettings.checkMotionAtArming && !heimdallSettings.checkContactAtArming ) {
+        document.getElementById('checkBeforeCountdown').checked = false;
+        heimdallSettings.checkBeforeCountdown = document.getElementById('checkBeforeCountdown').checked;
+    }
+    if ( !heimdallSettings.delayArmingFull && !heimdallSettings.delayArmingPartial ) {
+        document.getElementById('checkBeforeCountdown').checked = false;
+        heimdallSettings.checkBeforeCountdown = document.getElementById('checkBeforeCountdown').checked;
+    }
     Homey.set('settings', heimdallSettings );
 }
 

@@ -22,13 +22,14 @@ All detected motion and open/closed doors and windows on selected sensors will b
 
 ## Need Help, Have questions or remarks?
 
-Please post your questions/remarks on the [Athom community forum](https://forum.athom.com/discussion/4514/app-heimdall-let-homey-watch-over-your-home/p1)
+Please post your questions/remarks on the [Athom community forum](https://community.athom.com/t/134)
 
-## Changes for current version 1.0.1
-* No functional changes, previous beta promoted to stable (1.0.0)
-* Incremented version number to get a smoother upgrade experience (1.0.1)
+## Changes for current version 1.0.25
+* Removed temporary code
 
-An extensive changelog and more detailed technical information available at the [Github app page](https://github.com/daneedk/com.uc.heimdall)
+An extensive changelog is available [here](https://community.athom.com/t/134/3)
+ 
+More detailed technical information available at the [Github app page](https://github.com/daneedk/com.uc.heimdall)
 
 ## Donate
 If you like the app, consider buying me a beer!  
