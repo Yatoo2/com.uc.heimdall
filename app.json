@@ -76,7 +76,7 @@
 				"en": "Sensor active at Status Check.",
 				"nl": "Sensor actief bij status controle.",
 				"de": "Sensor aktiv bei Status Überprufing.",
-				"fr": "Capteur actif lors de la vérification de l'état."
+				"fr": "Capteur actif lors du contrôle des statuts."
 			},
 			"tokens": [
 				{
@@ -86,7 +86,7 @@
 						"en": "Device",
 						"nl": "Apparaat",
 						"de": "Gerät",
-						"fr": "Appareil"
+						"fr": "Objet"
 					},
 					"example": "Front door"
 				},
@@ -97,7 +97,7 @@
 						"en": "Device type",
 						"nl": "Apparaat type",
 						"de": "Gerätetyp",
-						"fr": "Type d'appareil"
+						"fr": "Type d'objet"
 					},
 					"example": "Contact"
 				},
@@ -119,7 +119,7 @@
 						"en": "State",
 						"nl": "Status",
 						"de": "Status",
-						"fr": "Etat"
+						"fr": "Statut"
 					},
 					"example": "Open"
 				}
@@ -174,7 +174,7 @@
 						"en": "Source",
 						"nl": "Bron",
 						"de": "Quelle",
-						"fr": "La source"
+						"fr": "Source"
 					},
 					"example": "Alarm Off Button"
 				}
@@ -242,7 +242,7 @@
 				"en": "The time until alarm changed",
 				"nl": "De tijd tot alarm wijzigt",
 				"de": "Zeit bis zum Alarm geändert",
-				"fr": "Le temps jusqu'à ce que l'alarme a changé"
+				"fr": "Le délai de temporisation d'alarme a été modifié"
 			},
 			"tokens": [
 				{
@@ -264,7 +264,7 @@
 				"en": "The time until armed changed",
 				"nl": "De tijd tot ingeschakeld wijzigt",
 				"de": "Zeit bis Aktivierung geändert",
-				"fr": "Le temps jusqu'à armé changé"
+				"fr": "Le délai de temporisation d'armement a été modifié"
 			},
 			"tokens": [
 				{
@@ -274,7 +274,7 @@
 						"en": "Seconds until armed",
 						"nl": "Seconden tot armed",
 						"de": "Sekunden bis Aktivierung",
-						"fr": "Secondes jusqu'à armé"
+						"fr": "Secondes avant l'armement"
 					},
 					"example": 30
 				}
@@ -286,7 +286,7 @@
 				"en": "A logline was written",
 				"nl": "Een logregel is geschreven",
 				"de": "Eine Meldung wurde geschrieben",
-				"fr": "Une logline a été écrite"
+				"fr": "Une ligne dans le journal a été écrite"
 			},
 			"tokens": [
 				{
@@ -296,7 +296,7 @@
 						"en": "Device",
 						"nl": "Apparaat",
 						"de": "Gerät",
-						"fr": "Appareil"
+						"fr": "Objet"
 					},
 					"example": "Motion Sensor"
 				},
@@ -307,7 +307,7 @@
 						"en": "State",
 						"nl": "Status",
 						"de": "Status",
-						"fr": "State"
+						"fr": "Statut"
 					},
 					"example": "Motion detected"
 				}
@@ -329,7 +329,7 @@
 						"en": "State",
 						"nl": "Status",
 						"de": "Status",
-						"fr": "State"
+						"fr": "Statuts"
 					},
 					"example": "Motion detected"
 				},
@@ -340,7 +340,7 @@
 						"en": "Device",
 						"nl": "Apparaat",
 						"de": "Gerät",
-						"fr": "Appareil"
+						"fr": "Objet"
 					},
 					"example": "Motion Sensor"
 				},
@@ -395,7 +395,7 @@
 						"en": "Device",
 						"nl": "Apparaat",
 						"de": "Gerät",
-						"fr": "Appareil"
+						"fr": "Objet"
 					},
 					"example": "Motion Sensor"
 				},
@@ -448,7 +448,7 @@
 										"en": "Disarmed",
 										"nl": "Uitgeschakeld",
 										"de": "Deaktiviert",
-										"fr": "Désactivé"
+										"fr": "Désactivée"
 									}
 								},
 								{
@@ -457,7 +457,7 @@
 										"en": "Partially Armed",
 										"nl": "Deels ingeschakeld",
 										"de": "Teilweise aktiviert",
-										"fr": "Partiellement activé"
+										"fr": "Partiellement activée"
 									}
 								}
 					  	]
@@ -479,7 +479,7 @@
 					"en": "Alarm countdown !{{active |not active}}",
 					"nl": "Alarm vertraging !{{actief |niet actief}}",
 					"de": "Alarmcountdown !{{aktiv |nicht aktiv}}",
-					"fr": "compte à rebours d'alarme !{{ |pas }} actif"
+					"fr": "Compte à rebours d'alarme !{{ |pas }} actif"
 				}
 			},
 			{
@@ -488,7 +488,7 @@
 					"en": "Alarm state is !{{active |not active}}",
 					"nl": "Alarm status is !{{actief |niet actief}}",
 					"de": "Alarmstatus !{{aktiv |nicht aktiv}}",
-					"fr": "l'état d'alarme !{{est |n'est pas }} actif"
+					"fr": "L'alarme !{{est |n'est pas }} actif"
 				}
 			}
 		],
@@ -530,7 +530,7 @@
 								"en": "Partially Armed",
 								"nl": "Deels ingeschakeld",
 								"de": "Teilweise aktiviert",
-								"fr": "Partiellement activé"
+								"fr": "Partiellement activée"
 							}
 						  }
 					  ]
@@ -606,7 +606,7 @@
 				"en": "Send information to Timeline",
 				"nl": "Stuur informatie naar Timeline",
 				"de": "Sende Informationen an Timeline",
-				"fr": "Envoyer des informations à Timeline"
+				"fr": "Envoyer des informations à la Timeline"
 			},
 			"args": [{
 				"name": "message",
@@ -622,7 +622,7 @@
 			  "en": "Home Alarm state",
 			  "nl": "Thuisalarm status",
 			  "de": "Heim Alarm Status",
-				"fr": "État d'alarme à la maison"
+			  "fr": "Statut de l'alarme de la maison"
 			},
 			"values": [
 			  {
@@ -631,7 +631,7 @@
 				  "en": "Armed",
 				  "nl": "Ingeschakeld",
 				  "de": "Gesichert",
-					"fr": "Activée"
+				  "fr": "Activée"
 				}
 			  },
 			  {
@@ -640,7 +640,7 @@
 				  "en": "Disarmed",
 				  "nl": "Uitgeschakeld",
 				  "de": "Entsichert",
-					"fr": "Desactivée"
+			          "fr": "Désactivée"
 				}
 			  },
 			  {
@@ -649,7 +649,7 @@
 				  "en": "Partially armed",
 				  "nl": "Deels ingeschakeld",
 				  "de": "Teils gesichert",
-					"fr": "Partiellement activé"
+				  "fr": "Partiellement activée"
 				}
 			  }
 			],
@@ -728,7 +728,7 @@
 						"en": "All is quiet",
 						"nl": "Alles ok",
 						"de": "Alles ok",
-						"fr": "Tout est calme"
+						"fr": "Rien à signaler"
 					}
 				}
 			},
@@ -783,7 +783,7 @@
 						"en": "All is quiet",
 						"nl": "Alles ok",
 						"de": "Alles ok",
-						"fr": "Tout est calme"
+						"fr": "Rien à signaler"
 					}
 				}
 			},
