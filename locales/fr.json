@@ -65,7 +65,7 @@
                 "logging": "Connexion",
                 "check": "Vérification avant activation",
                 "speech": "Laissez Homey vous dire quand",
-                "notifications": "…crire dans le flux quand"
+                "notifications": "Écrire dans le flux quand"
             },
             "title": "Paramètres",
             "arDelay": "Délai d'activation",
