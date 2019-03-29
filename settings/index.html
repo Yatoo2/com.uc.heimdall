@@ -11,12 +11,12 @@
         <div id="app">
             <p data-i18n="settings.benefit"></p>
             <div class="loader" v-if="loading">
-                Loading Heimdall settings...
+                Chargement des paramètres de Heimdall...
             </div>
             <div id="tabs" class="rTable" style="display: none;">
-                    <div id="tabb1" class="tab tab-active" onclick="showTab(1)" data-i18n="tab1.title">-Dashboard-</div>
-                    <div id="tabb2" class="tab tab-inactive" onclick="showTab(2)" data-i18n="tab2.title">-Devices-</div>
-                    <div id="tabb3" class="tab tab-inactive" onclick="showTab(3)" data-i18n="tab3.title">-Settings-</div>
+                    <div id="tabb1" class="tab tab-active" onclick="showTab(1)" data-i18n="tab1.title">-Tableau de bord-</div>
+                    <div id="tabb2" class="tab tab-inactive" onclick="showTab(2)" data-i18n="tab2.title">-Objets-</div>
+                    <div id="tabb3" class="tab tab-inactive" onclick="showTab(3)" data-i18n="tab3.title">-Paramètres-</div>
                     <div id="tabb4" class="tab tab-inactive" onclick="showTab(4)" data-i18n="tab4.title">-Instructions-</div>
             </div>
             <div id="tab1" class="panel" style="display: none;">
@@ -25,7 +25,7 @@
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab1.history.autoRefresh">-Auto refresh (every 1 Sec)-</span>
+                            <span data-i18n="tab1.history.autoRefresh">-Rafraichissement auto. (toutes les secondes)-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -38,7 +38,7 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab1.history.useColors">-Use colors-</span>
+                            <span data-i18n="tab1.history.useColors">-Utiliser des couleurs-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -51,7 +51,7 @@
                 <div style="display:none" id="buttonRefresh" class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-button" onClick="showHistory(0)">
-                            <span data-i18n="tab1.history.manualRefresh">-Refresh-</span>
+                            <span data-i18n="tab1.history.manualRefresh">-Rafraîchir-</span>
                         </div>
                     </div>
                 </div>
@@ -60,14 +60,14 @@
                 <div class="Overflow historyheight">
                     <div class="rTable" id="historyTable"></div>
                 </div>
-                <!--button id="clearHistory" class="left" onclick="clearHistory()" data-i18n="tab1.history.btnClearHistory">-Clear Log-</button-->
-                <!--button id="downloadHistory" class="left" onclick="downloadHistory()"  data-i18n="tab1.history.btnDownload">-Download-</button-->
+                <!--button id="clearHistory" class="left" onclick="clearHistory()" data-i18n="tab1.history.btnClearHistory">-Vider le journal-</button-->
+                <!--button id="downloadHistory" class="left" onclick="downloadHistory()"  data-i18n="tab1.history.btnDownload">-Télécharger-</button-->
             </div>
             <div id="tab2" class="panel" style="display: none;">
                 <div class="settings-top"></div>
                 <div id="subTabs" class="rTable" style="background-color: white">
-                    <div id="subTabb1" class="subTab tab-active" onclick="showSubTab(1)" data-i18n="tab2.subtab1.title">-Status-</div>
-                    <div id="subTabb2" class="subTab tab-inactive" onclick="showSubTab(2)" data-i18n="tab2.subtab2.title">-Settings-</div>
+                    <div id="subTabb1" class="subTab tab-active" onclick="showSubTab(1)" data-i18n="tab2.subtab1.title">-Statuts-</div>
+                    <div id="subTabb2" class="subTab tab-inactive" onclick="showSubTab(2)" data-i18n="tab2.subtab2.title">-Paramètres-</div>
                 </div>
                 <div id="subTab1" class="subPanel">
                     <div class="settings-top"></div>
@@ -108,14 +108,14 @@
                                     {{ getZone(device.zone) }}<br />
                                     <b>{{device.name}}</b>
                                     <br />
-                                    <a v-if="!isLogged(device)" @click="addLog(device)" class="btn narrow btn-inactive" data-i18n="tab2.devices.log">-Log-</a>
-                                    <a v-if="isLogged(device)" @click="removeLog(device)" class="btn narrow btn-active" data-i18n="tab2.devices.log">-Log-</a>
-                                    <a v-if="!isMonitoredFull(device)" @click="addMonitorFull(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.full">-Full-</a>
-                                    <a v-if="isMonitoredFull(device)" @click="removeMonitorFull(device)" class="btn middle btn-active" data-i18n="tab2.devices.full">-Full-</a>
-                                    <a v-if="!isMonitoredPartial(device)" @click="addMonitorPartial(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.partial">-Partial-</a>
-                                    <a v-if="isMonitoredPartial(device)" @click="removeMonitorPartial(device)" class="btn middle btn-active" data-i18n="tab2.devices.partial">-Partial-</a>
-                                    <a v-if="!isDelayed(device)" @click="addDelay(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.delay">-Delay-</a>
-                                    <a v-if="isDelayed(device)" @click="removeDelay(device)" class="btn middle btn-active" data-i18n="tab2.devices.delay">-Delay-</a>
+                                    <a v-if="!isLogged(device)" @click="addLog(device)" class="btn narrow btn-inactive" data-i18n="tab2.devices.log">-Journal-</a>
+                                    <a v-if="isLogged(device)" @click="removeLog(device)" class="btn narrow btn-active" data-i18n="tab2.devices.log">-Journal-</a>
+                                    <a v-if="!isMonitoredFull(device)" @click="addMonitorFull(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.full">-Complète-</a>
+                                    <a v-if="isMonitoredFull(device)" @click="removeMonitorFull(device)" class="btn middle btn-active" data-i18n="tab2.devices.full">-Complète-</a>
+                                    <a v-if="!isMonitoredPartial(device)" @click="addMonitorPartial(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.partial">-Partielle-</a>
+                                    <a v-if="isMonitoredPartial(device)" @click="removeMonitorPartial(device)" class="btn middle btn-active" data-i18n="tab2.devices.partial">-Partielle-</a>
+                                    <a v-if="!isDelayed(device)" @click="addDelay(device)" class="btn middle btn-inactive" data-i18n="tab2.devices.delay">-Délai-</a>
+                                    <a v-if="isDelayed(device)" @click="removeDelay(device)" class="btn middle btn-active" data-i18n="tab2.devices.delay">-Délai-</a>
                                 </div>
                             </div>
                         </div>
@@ -125,15 +125,15 @@
             <div id="tab3" class="panel" style="display: none;">
                 <div class="settings-top"></div>
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.delays" class="text-header">-Delays-</div>
+                <div data-i18n="tab3.settings.settingsgroup.delays" class="text-header">-Délais-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.arDelay">-ArmingDelay-</span>
+                            <span data-i18n="tab3.settings.arDelay">-Délai d'armement-</span>
                         </div>
                         <div class="settings-item-input">
                             <input class="hy-nostyle" id="armingDelay" type="text" value="31" onblur="changeArmingDelay()">
-                            <label data-i18n="tab3.settings.seconds">-Seconds-</label>
+                            <label data-i18n="tab3.settings.seconds">-Secondes-</label>
                         </div>
                     </div>
                     <div class="settings-item">
@@ -143,18 +143,18 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                        <span data-i18n="tab3.settings.alDelay">-Alarm delay:-</span>
+                        <span data-i18n="tab3.settings.alDelay">-Délai d'alarme:-</span>
                         </div>
                         <div class="settings-item-input">
                             <input class="hy-nostyle" id="alarmDelay" type="text" value="31" onblur="changeAlarmDelay()">
-                            <label data-i18n="tab3.settings.seconds">-Seconds-</label>
+                            <label data-i18n="tab3.settings.seconds">-Secondes-</label>
                         </div>
                     </div>
                 </div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.delayarmingfull">-Use when enabling Armed mode-</span>
+                            <span data-i18n="tab3.settings.delayarmingfull">-Utiliser lors de l'activation du mode d'armement complet-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -171,7 +171,7 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                                <span data-i18n="tab3.settings.delayarmingpartial">-Use when enabling Partially Armed mode-</span>
+                                <span data-i18n="tab3.settings.delayarmingpartial">-Utiliser lors de l'activation du mode d'armement partiel-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -182,11 +182,11 @@
                     </div>
                 </div>
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.logging" class="text-header">-Logging-</div>
+                <div data-i18n="tab3.settings.settingsgroup.logging" class="text-header">-Ecriture dans le journal-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.logarmedonly">-Only log when a Surveillance mode is active-</span>
+                            <span data-i18n="tab3.settings.logarmedonly">-Ecrire dans le journal uniquement lorsqu'un mode de surveillance est actif-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -199,7 +199,7 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.logtrueonly">-Do not log deactivating of sensors-</span>
+                            <span data-i18n="tab3.settings.logtrueonly">-Ne pas écrire dans le journal lorsqu'un capteur se désactive-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -214,7 +214,7 @@
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                                <span data-i18n="tab3.settings.usetampering">-Listen to tampering reports from sensors-</span>
+                                <span data-i18n="tab3.settings.usetampering">-Prendre en concidération les rapports d'altération des capteurs-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -226,11 +226,11 @@
                 </div>
 
                 <div class="settings-spacer"></div>
-                <div data-i18n="tab3.settings.settingsgroup.check" class="text-header">-Sensor check-</div>
+                <div data-i18n="tab3.settings.settingsgroup.check" class="text-header">-Contrôle des capteurs-</div>
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.checkMotionAtArming">-Check for active Motion Sensor when arming-</span>
+                            <span data-i18n="tab3.settings.checkMotionAtArming">-Contrôler si un mouvement est détecté lors de l'armement-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -243,7 +243,7 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.checkContactAtArming">-Check for open doors/windows when arming-</span>
+                            <span data-i18n="tab3.settings.checkContactAtArming">-Contrôler si une porte/fenêtre est ouverte lors de l'armement-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -256,7 +256,7 @@
 
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.settings.checkbeforecountdown">-Perform Pre-Arming check before Delay-</span>
+                            <span data-i18n="tab3.settings.checkbeforecountdown">-Effectuer un contrôle avant le délai d'armement-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -272,7 +272,7 @@
                 <div class="settings-itemgroup">
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.notification.smodechange">-the Surveillance Mode changed-</span>
+                            <span data-i18n="tab3.notification.smodechange">-Le mode de surveillance a changé-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
@@ -285,7 +285,7 @@
                     
                     <div class="settings-item">
                         <div class="settings-item-text">
-                            <span data-i18n="tab3.notification.alarmchange">-the alarm is activated-</span>
+                            <span data-i18n="tab3.notification.alarmchange">-L'alarme est activé-</span>
                         </div>
                         <div class="settings-item-last">
                             <label class="form-switch">
